@@ -1,0 +1,1 @@
+# Honeycomb OpenTelemetry Distro Changelog
