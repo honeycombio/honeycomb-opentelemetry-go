@@ -1,5 +1,25 @@
-# Default Community Health Files
+# Honeycomb OpenTelemetry Distro for Go
 
-This repository contains default community health files for repositories in the Honeycomb organization and will automatically be picked up if they are not overwritten.
+[![OSS Lifecycle](https://img.shields.io/osslifecycle/honeycombio/honeycomb-opentelemetry-go)](https://github.com/honeycombio/home/blob/main/honeycomb-oss-lifecycle-and-practices.md)
+[![CircleCI](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-go.svg?style=shield&circle-token=e2f4c30919ecbdbfb095415a6f4114a03dc491a0)](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-go)
 
-More details on this repository structure can be found here: https://docs.github.com/en/github/building-a-strong-community/creating-a-default-community-health-file
+**STATUS: this library is BETA.**
+You're welcome to try it, and let us know your feedback in the issues!
+
+This is Honeycomb's distribution of OpenTelemetry for Go.
+It makes getting started with OpenTelemetry and Honeycomb easier!
+
+Latest release built with:
+
+- [OpenTelemetry](https://github.com/open-telemetry/opentelemetry-go/releases/tag/{version}) version {version}
+
+## Why would I want to use this?
+
+- Streamlined configuration for sending data to Honeycomb!
+- Easy interop with existing instrumentation with OpenTelemetry!
+- Deterministic sampling!
+- Multi-span attributes!
+
+## License
+
+[Apache 2.0 License](./LICENSE).
