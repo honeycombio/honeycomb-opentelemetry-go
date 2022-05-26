@@ -1,7 +1,7 @@
-# Honeycomb OpenTelemetry Distro for Go
-
 [![OSS Lifecycle](https://img.shields.io/osslifecycle/honeycombio/honeycomb-opentelemetry-go)](https://github.com/honeycombio/home/blob/main/honeycomb-oss-lifecycle-and-practices.md)
-[![CircleCI](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-go.svg?style=shield&circle-token=e2f4c30919ecbdbfb095415a6f4114a03dc491a0)](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-go)
+[![Build Status](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-go.svg?style=shield)](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-go)
+
+# Honeycomb OpenTelemetry Distro for Go
 
 **STATUS: this library is BETA.**
 You're welcome to try it, and let us know your feedback in the issues!
