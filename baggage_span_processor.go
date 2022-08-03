@@ -26,6 +26,10 @@ type baggageSpanProcessor struct{}
 
 var _ trace.SpanProcessor = (*baggageSpanProcessor)(nil)
 
+// Returns a new baggageSpanProcessor.
+//
+// The Baggage span processor duplicates onto a span the attributes found
+// in Baggage in the parent context at the moment the span is started.
 func NewBaggageSpanProcessor() trace.SpanProcessor {
 	return &baggageSpanProcessor{}
 }

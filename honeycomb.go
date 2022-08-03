@@ -62,6 +62,7 @@ func init() {
 	}
 }
 
+// WithHoneycomb() sets the destination for traces and metrics to Honeycomb's API endpoint.
 func WithHoneycomb() launcher.Option {
 	return func(c *launcher.Config) {
 		c.TracesExporterEndpoint = DefaultSpanExporterEndpoint
@@ -69,12 +70,14 @@ func WithHoneycomb() launcher.Option {
 	}
 }
 
+// WithApiKey() sets the authorization header appropriately for sending to Honeycomb's API endpoint.
 func WithApiKey(apikey string) launcher.Option {
 	return func(c *launcher.Config) {
 		c.Headers[honeycombApiKeyHeader] = apikey
 	}
 }
 
+// WithDataset() sets the header for routing telemetry to a named dataset at Honeycomb. (For trace data in Classic teams and for metrics only.)
 func WithDataset(dataset string) launcher.Option {
 	return func(c *launcher.Config) {
 		c.Headers[honeycombDatasetHeader] = dataset
