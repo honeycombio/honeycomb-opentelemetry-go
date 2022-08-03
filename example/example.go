@@ -16,8 +16,11 @@ package main
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/honeycombio/opentelemetry-go-contrib/launcher"
@@ -30,8 +33,8 @@ import (
 func main() {
 	dsp := honeycomb.NewDynamicAttributeSpanProcessor(func() []attribute.KeyValue {
 		return []attribute.KeyValue{
-			attribute.String("foo", "bar"),
-			attribute.Int64("unix", time.Now().UnixMilli()),
+			attribute.String("app.guru_meditation", getGuruMeditation()),
+			attribute.Int64("app.unix_time_ms", time.Now().UnixMilli()),
 		}
 	})
 	bsp := honeycomb.NewBaggageSpanProcessor()
@@ -60,4 +63,12 @@ func main() {
 	defer bazSpan.End()
 
 	fmt.Println("OpenTelemetry example")
+}
+
+func getGuruMeditation() string {
+	bytes := make([]byte, 4)
+	if _, err := rand.Read(bytes); err != nil {
+		return "48454C50"
+	}
+	return strings.ToUpper(hex.EncodeToString(bytes))
 }
