@@ -19,6 +19,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -28,6 +29,7 @@ import (
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/baggage"
 )
 
 func main() {
@@ -55,6 +57,19 @@ func main() {
 
 	ctx, fooSpan := tracer.Start(ctx, "foo")
 	defer fooSpan.End()
+
+	suitcase := baggage.FromContext(ctx)
+	packingCube, err := baggage.NewMember("app.luggage", url.QueryEscape("set before bar started"))
+	if err != nil {
+		fmt.Printf("Invalid baggage member: %s.\n", err)
+		os.Exit(1)
+	}
+	suitcase, err = suitcase.SetMember(packingCube)
+	if err != nil {
+		fmt.Printf("I couldn't pack that: %s.\n", err)
+		os.Exit(1)
+	}
+	ctx = baggage.ContextWithBaggage(ctx, suitcase)
 
 	ctx, barSpan := tracer.Start(ctx, "bar")
 	defer barSpan.End()
