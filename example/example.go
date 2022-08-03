@@ -46,7 +46,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	tracer := otel.Tracer("ex.com/basic")
+	tracer := otel.Tracer("honeycomb-otel-go-distro-example")
 
 	ctx := context.Background()
 
