@@ -29,37 +29,9 @@ const (
 )
 
 func init() {
-	launcher.SetVendorOptions = func() []launcher.Option {
-		opts := []launcher.Option{
-			WithHoneycomb(),
-		}
-		if apikey := os.Getenv("HONEYCOMB_API_KEY"); apikey != "" {
-			opts = append(opts, WithApiKey(apikey))
-		}
-		if dataset := os.Getenv("HONEYCOMB_DATASET"); dataset != "" {
-			opts = append(opts, WithDataset(dataset))
-		}
-		return opts
-	}
+	launcher.SetVendorOptions = getVendorOptionSetters
 
-	launcher.ValidateConfig = func(c *launcher.Config) error {
-		apikey := c.Headers[honeycombApiKeyHeader]
-		dataset := c.Headers[honeycombDatasetHeader]
-
-		switch len(apikey) {
-		case 0:
-			return fmt.Errorf("missing x-honeycomb-team header")
-		case 32: // classic
-			if dataset == "" {
-				return fmt.Errorf("missing x-honeycomb-dataset header")
-			}
-		default:
-			if dataset != "" {
-				return fmt.Errorf("do not include dataset header for non-classic API keys")
-			}
-		}
-		return nil
-	}
+	launcher.ValidateConfig = validateConfig
 }
 
 // WithHoneycomb() sets the destination for traces and metrics to Honeycomb's API endpoint.
@@ -82,4 +54,36 @@ func WithDataset(dataset string) launcher.Option {
 	return func(c *launcher.Config) {
 		c.Headers[honeycombDatasetHeader] = dataset
 	}
+}
+
+func getVendorOptionSetters() []launcher.Option {
+	opts := []launcher.Option{
+		WithHoneycomb(),
+	}
+	if apikey := os.Getenv("HONEYCOMB_API_KEY"); apikey != "" {
+		opts = append(opts, WithApiKey(apikey))
+	}
+	if dataset := os.Getenv("HONEYCOMB_DATASET"); dataset != "" {
+		opts = append(opts, WithDataset(dataset))
+	}
+	return opts
+}
+
+func validateConfig(c *launcher.Config) error {
+	apikey := c.Headers[honeycombApiKeyHeader]
+	dataset := c.Headers[honeycombDatasetHeader]
+
+	switch len(apikey) {
+	case 0:
+		return fmt.Errorf("missing x-honeycomb-team header")
+	case 32: // classic
+		if dataset == "" {
+			return fmt.Errorf("missing x-honeycomb-dataset header")
+		}
+	default:
+		if dataset != "" {
+			return fmt.Errorf("do not include dataset header for non-classic API keys")
+		}
+	}
+	return nil
 }
