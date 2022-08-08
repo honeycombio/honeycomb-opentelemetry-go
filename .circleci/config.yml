@@ -9,7 +9,7 @@ jobs:
       - restore_cache:
           keys:
             - v1-go-mod-{{ checksum "go.sum" }}
-      - run: go test -v ./...
+      - run: make test
       - save_cache:
           key: v1-go-mod-{{ checksum "go.sum" }}
           paths:
