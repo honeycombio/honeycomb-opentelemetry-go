@@ -34,35 +34,49 @@ func freshConfig() *launcher.Config {
 	}
 }
 
-func TestSetVendorOptionsWithApikeyAndDataset(t *testing.T) {
-	t.Setenv("HONEYCOMB_API_KEY", "atestkey")
-	t.Setenv("HONEYCOMB_DATASET", "adataset")
-
-	aConfig := freshConfig()
-
-	for _, setter := range getVendorOptionSetters() {
-		setter(aConfig)
+func TestSetVendorOptions(t *testing.T) {
+	testCases := []struct {
+		desc            string
+		apikey          string
+		dataset         string
+		expectedHeaders map[string]string
+	}{
+		{
+			desc:    "with API key and dataset",
+			apikey:  "atestkey",
+			dataset: "adataset",
+			expectedHeaders: map[string]string{
+				honeycombApiKeyHeader:  "atestkey",
+				honeycombDatasetHeader: "adataset",
+			},
+		},
+		{
+			desc:            "no API key or dataset",
+			apikey:          "",
+			dataset:         "",
+			expectedHeaders: map[string]string{},
+		},
 	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			t.Setenv("HONEYCOMB_API_KEY", tC.apikey)
+			t.Setenv("HONEYCOMB_DATASET", tC.dataset)
 
-	assert.Equal(t, DefaultSpanExporterEndpoint, aConfig.TracesExporterEndpoint)
-	assert.Equal(t, DefaultMetricExporterEndpoint, aConfig.MetricsExporterEndpoint)
-	assert.Equal(t, "atestkey", aConfig.Headers[honeycombApiKeyHeader])
-	assert.Equal(t, "adataset", aConfig.Headers[honeycombDatasetHeader])
-}
+			aConfig := freshConfig()
 
-func TestSetVendorOptionsNoApikeyAndDataset(t *testing.T) {
-	t.Setenv("HONEYCOMB_API_KEY", "")
-	t.Setenv("HONEYCOMB_DATASET", "")
+			for _, setter := range getVendorOptionSetters() {
+				setter(aConfig)
+			}
 
-	aConfig := freshConfig()
-
-	for _, setter := range getVendorOptionSetters() {
-		setter(aConfig)
+			assert.Equal(t, DefaultSpanExporterEndpoint, aConfig.TracesExporterEndpoint,
+				"Trace data should be configured to target the Honeycomb API endpoint.",
+			)
+			assert.Equal(t, DefaultMetricExporterEndpoint, aConfig.MetricsExporterEndpoint,
+				"Metric data should be configured to target the Honeycomb API endpoint.",
+			)
+			assert.Equal(t, tC.expectedHeaders, aConfig.Headers)
+		})
 	}
-
-	assert.Equal(t, DefaultSpanExporterEndpoint, aConfig.TracesExporterEndpoint)
-	assert.Equal(t, DefaultMetricExporterEndpoint, aConfig.MetricsExporterEndpoint)
-	assert.Equal(t, map[string]string{}, aConfig.Headers, "No headers set without config env vars set.")
 }
 
 func TestValidateConfig(t *testing.T) {
