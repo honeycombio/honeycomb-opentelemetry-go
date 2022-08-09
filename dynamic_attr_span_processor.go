@@ -27,6 +27,14 @@ type dynamicAttributeSpanProcessor struct {
 
 var _ trace.SpanProcessor = (*dynamicAttributeSpanProcessor)(nil)
 
+// Returns a new dynamicAttributeSpanProcessor.
+//
+// Use this span processor when you find yourself wishing for dynamic resource attributes.
+//
+// Define a function that sets attributes and values for them, then pass that function in as
+// the setAttributes parameter to this constructor. The Dynamic Attribute span processor
+// will call setAttributes whenever a span is started which allows for defining a function
+// once and to have attribute values determined on span start.
 func NewDynamicAttributeSpanProcessor(setAttributes func() []attribute.KeyValue) trace.SpanProcessor {
 	return &dynamicAttributeSpanProcessor{
 		SetAttributes: setAttributes,
