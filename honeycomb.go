@@ -17,6 +17,7 @@ package honeycomb
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/honeycombio/opentelemetry-go-contrib/launcher"
 )
@@ -56,6 +57,14 @@ func WithDataset(dataset string) launcher.Option {
 	}
 }
 
+// WithSampler() sets the sampler used to sample trace spans using a Honeycomb sample rate.
+// Sample rate is expressed as 1/X where x is the population size.
+func WithSampler(sampleRate int) launcher.Option {
+	return func(c *launcher.Config) {
+		c.Sampler = NewDeterministicSampler(sampleRate)
+	}
+}
+
 func getVendorOptionSetters() []launcher.Option {
 	opts := []launcher.Option{
 		WithHoneycomb(),
@@ -65,6 +74,12 @@ func getVendorOptionSetters() []launcher.Option {
 	}
 	if dataset := os.Getenv("HONEYCOMB_DATASET"); dataset != "" {
 		opts = append(opts, WithDataset(dataset))
+	}
+	if sampleRateStr := os.Getenv("HONEYCOMB_SAMPLE_RATE"); sampleRateStr != "" {
+		sampleRate, err := strconv.Atoi(sampleRateStr)
+		if err == nil {
+			opts = append(opts, WithSampler(sampleRate))
+		}
 	}
 	return opts
 }
