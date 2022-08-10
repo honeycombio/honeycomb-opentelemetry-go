@@ -17,8 +17,11 @@ package honeycomb
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/honeycombio/opentelemetry-go-contrib/launcher"
+	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
+	"go.opentelemetry.io/otel/sdk/trace"
 )
 
 const (
@@ -30,7 +33,6 @@ const (
 
 func init() {
 	launcher.SetVendorOptions = getVendorOptionSetters
-
 	launcher.ValidateConfig = validateConfig
 }
 
@@ -56,6 +58,12 @@ func WithDataset(dataset string) launcher.Option {
 	}
 }
 
+// WithDebugSpanExporter() determines whether a debug (stdout) traces exporter should be configured.
+func WithDebugSpanExporter() launcher.Option {
+	spanExporter, _ := stdouttrace.New(stdouttrace.WithPrettyPrint())
+	return launcher.WithSpanProcessor(trace.NewSimpleSpanProcessor(spanExporter))
+}
+
 func getVendorOptionSetters() []launcher.Option {
 	opts := []launcher.Option{
 		WithHoneycomb(),
@@ -65,6 +73,12 @@ func getVendorOptionSetters() []launcher.Option {
 	}
 	if dataset := os.Getenv("HONEYCOMB_DATASET"); dataset != "" {
 		opts = append(opts, WithDataset(dataset))
+	}
+	if enabledStr := os.Getenv("OTEL_EXPORTER_DEBUG_ENABLED"); enabledStr != "" {
+		enabled, _ := strconv.ParseBool(enabledStr)
+		if enabled {
+			opts = append(opts, WithDebugSpanExporter())
+		}
 	}
 	return opts
 }
