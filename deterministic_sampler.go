@@ -28,7 +28,9 @@ func NewDeterministicSampler(sampleRate int) DeterministicSampler {
 
 func (ds DeterministicSampler) ShouldSample(parameters trace.SamplingParameters) trace.SamplingResult {
 	result := ds.innerSampler.ShouldSample(parameters)
-	result.Attributes = append(result.Attributes, ds.sampleRateAttribute)
+	if result.Decision == trace.RecordAndSample {
+		result.Attributes = append(result.Attributes, ds.sampleRateAttribute)
+	}
 	return result
 }
 
