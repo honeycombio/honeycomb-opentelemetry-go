@@ -58,6 +58,14 @@ func WithDataset(dataset string) launcher.Option {
 	}
 }
 
+// WithSampler() sets the sampler used to sample trace spans using a Honeycomb sample rate.
+// Sample rate is expressed as 1/X where x is the population size.
+func WithSampler(sampleRate int) launcher.Option {
+	return func(c *launcher.Config) {
+		c.Sampler = NewDeterministicSampler(sampleRate)
+	}
+}
+
 // WithDebugSpanExporter() determines whether a debug (stdout) traces exporter should be configured.
 func WithDebugSpanExporter() launcher.Option {
 	spanExporter, _ := stdouttrace.New(stdouttrace.WithPrettyPrint())
@@ -73,6 +81,12 @@ func getVendorOptionSetters() []launcher.Option {
 	}
 	if dataset := os.Getenv("HONEYCOMB_DATASET"); dataset != "" {
 		opts = append(opts, WithDataset(dataset))
+	}
+	if sampleRateStr := os.Getenv("HONEYCOMB_SAMPLE_RATE"); sampleRateStr != "" {
+		sampleRate, err := strconv.Atoi(sampleRateStr)
+		if err == nil {
+			opts = append(opts, WithSampler(sampleRate))
+		}
 	}
 	if enabledStr := os.Getenv("OTEL_EXPORTER_DEBUG_ENABLED"); enabledStr != "" {
 		enabled, _ := strconv.ParseBool(enabledStr)

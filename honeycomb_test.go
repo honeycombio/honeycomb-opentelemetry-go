@@ -31,6 +31,7 @@ func freshConfig() *launcher.Config {
 		Resource:                        &resource.Resource{},
 		Logger:                          nil,
 		ShutdownFunctions:               []func(c *launcher.Config) error{},
+		Sampler:                         trace.AlwaysSample(),
 	}
 }
 
@@ -127,6 +128,23 @@ func TestValidateConfig(t *testing.T) {
 			assert.Equal(t, tC.expectedError, err)
 		})
 	}
+}
+
+func TestConfigureDeterministicSampler(t *testing.T) {
+	// no env var - should use default sampler
+	config := freshConfig()
+	for _, setter := range getVendorOptionSetters() {
+		setter(config)
+	}
+	assert.Equal(t, "AlwaysOnSampler", config.Sampler.Description())
+
+	// set env var - should have deterministic sampler
+	t.Setenv("HONEYCOMB_SAMPLE_RATE", "1")
+	config = freshConfig()
+	for _, setter := range getVendorOptionSetters() {
+		setter(config)
+	}
+	assert.Equal(t, "DeterministicSampler", config.Sampler.Description())
 }
 
 func TestSettingExporterDebugEnabledAddsDebugExporter(t *testing.T) {
