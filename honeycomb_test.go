@@ -160,7 +160,7 @@ func TestConfigureDeterministicSampler(t *testing.T) {
 
 func TestSettingExporterDebugEnabledAddsDebugExporter(t *testing.T) {
 	config := freshConfig()
-	t.Setenv("OTEL_EXPORTER_DEBUG_ENABLED", "true")
+	t.Setenv("DEBUG", "true")
 
 	for _, setter := range getVendorOptionSetters() {
 		setter(config)

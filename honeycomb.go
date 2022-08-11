@@ -93,7 +93,7 @@ func getVendorOptionSetters() []launcher.Option {
 			opts = append(opts, WithSampler(sampleRate))
 		}
 	}
-	if enabledStr := os.Getenv("OTEL_EXPORTER_DEBUG_ENABLED"); enabledStr != "" {
+	if enabledStr := os.Getenv("DEBUG"); enabledStr != "" {
 		enabled, _ := strconv.ParseBool(enabledStr)
 		if enabled {
 			opts = append(opts, WithDebugSpanExporter())
