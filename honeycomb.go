@@ -17,6 +17,7 @@ package honeycomb
 import (
 	"fmt"
 	"os"
+	"runtime"
 	"strconv"
 
 	"github.com/honeycombio/opentelemetry-go-contrib/launcher"
@@ -25,10 +26,12 @@ import (
 )
 
 const (
-	DefaultSpanExporterEndpoint   = "api.honeycomb.io:443"
-	DefaultMetricExporterEndpoint = "api.honeycomb.io:443"
-	honeycombApiKeyHeader         = "x-honeycomb-team"
-	honeycombDatasetHeader        = "x-honeycomb-dataset"
+	DefaultSpanExporterEndpoint      = "api.honeycomb.io:443"
+	DefaultMetricExporterEndpoint    = "api.honeycomb.io:443"
+	honeycombApiKeyHeader            = "x-honeycomb-team"
+	honeycombDatasetHeader           = "x-honeycomb-dataset"
+	honeycombDistroVersionKey        = "honeycomb.distro.version"
+	honeycombDistroRuntimeVersionKey = "honeycomb.distro.runtime_version"
 )
 
 func init() {
@@ -39,6 +42,8 @@ func init() {
 // WithHoneycomb() sets the destination for traces and metrics to Honeycomb's API endpoint.
 func WithHoneycomb() launcher.Option {
 	return func(c *launcher.Config) {
+		c.ResourceAttributes[honeycombDistroVersionKey] = Version
+		c.ResourceAttributes[honeycombDistroRuntimeVersionKey] = runtime.Version()
 		c.TracesExporterEndpoint = DefaultSpanExporterEndpoint
 		c.MetricsExporterEndpoint = DefaultMetricExporterEndpoint
 	}

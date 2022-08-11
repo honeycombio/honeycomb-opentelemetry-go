@@ -2,6 +2,7 @@ package honeycomb
 
 import (
 	"fmt"
+	"runtime"
 	"testing"
 
 	"github.com/honeycombio/opentelemetry-go-contrib/launcher"
@@ -128,6 +129,16 @@ func TestValidateConfig(t *testing.T) {
 			assert.Equal(t, tC.expectedError, err)
 		})
 	}
+}
+
+func TestHoneycombResourceAttributesAreSet(t *testing.T) {
+	config := freshConfig()
+	for _, setter := range getVendorOptionSetters() {
+		setter(config)
+	}
+
+	assert.Equal(t, Version, config.ResourceAttributes["honeycomb.distro.version"])
+	assert.Equal(t, runtime.Version(), config.ResourceAttributes["honeycomb.distro.runtime_version"])
 }
 
 func TestConfigureDeterministicSampler(t *testing.T) {
