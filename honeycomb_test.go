@@ -171,3 +171,11 @@ func TestSettingExporterDebugEnabledAddsDebugExporter(t *testing.T) {
 	// Let's check we have at least configured a span processor for now
 	assert.Equal(t, 1, len(config.SpanProcessors))
 }
+
+func TestServiceNameDefaultsToUnknownServiceWhenNotSet(t *testing.T) {
+	config := freshConfig()
+	for _, setter := range getVendorOptionSetters() {
+		setter(config)
+	}
+	assert.Equal(t, "unknown_service:golang", config.ServiceName)
+}
