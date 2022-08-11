@@ -150,7 +150,7 @@ func TestConfigureDeterministicSampler(t *testing.T) {
 	assert.Equal(t, "AlwaysOnSampler", config.Sampler.Description())
 
 	// set env var - should have deterministic sampler
-	t.Setenv("HONEYCOMB_SAMPLE_RATE", "1")
+	t.Setenv("SAMPLE_RATE", "1")
 	config = freshConfig()
 	for _, setter := range getVendorOptionSetters() {
 		setter(config)

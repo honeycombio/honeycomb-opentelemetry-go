@@ -87,7 +87,7 @@ func getVendorOptionSetters() []launcher.Option {
 	if dataset := os.Getenv("HONEYCOMB_DATASET"); dataset != "" {
 		opts = append(opts, WithDataset(dataset))
 	}
-	if sampleRateStr := os.Getenv("HONEYCOMB_SAMPLE_RATE"); sampleRateStr != "" {
+	if sampleRateStr := os.Getenv("SAMPLE_RATE"); sampleRateStr != "" {
 		sampleRate, err := strconv.Atoi(sampleRateStr)
 		if err == nil {
 			opts = append(opts, WithSampler(sampleRate))
