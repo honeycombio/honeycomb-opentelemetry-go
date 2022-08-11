@@ -11,7 +11,7 @@ It makes getting started with OpenTelemetry and Honeycomb easier!
 
 Latest release built with:
 
-- [OpenTelemetry](https://github.com/open-telemetry/opentelemetry-go/releases/tag/{version}) version {version}
+- [OpenTelemetry](https://github.com/open-telemetry/opentelemetry-go/releases/tag/v1.9.0) version v1.9.0
 
 ## Why would I want to use this?
 
@@ -19,6 +19,7 @@ Latest release built with:
 - Easy interop with existing instrumentation with OpenTelemetry!
 - Deterministic sampling!
 - Multi-span attributes!
+- Dynamic attributes!
 
 ## License
 
