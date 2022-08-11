@@ -177,5 +177,5 @@ func TestServiceNameDefaultsToUnknownServiceWhenNotSet(t *testing.T) {
 	for _, setter := range getVendorOptionSetters() {
 		setter(config)
 	}
-	assert.Equal(t, "unknown_service:golang", config.ServiceName)
+	assert.Equal(t, "unknown_service:go", config.ServiceName)
 }

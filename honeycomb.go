@@ -100,7 +100,7 @@ func getVendorOptionSetters() []launcher.Option {
 		}
 	}
 	if serviceName := os.Getenv("OTEL_SERVICE_NAME"); serviceName == "" {
-		opts = append(opts, launcher.WithServiceName("unknown_service:golang"))
+		opts = append(opts, launcher.WithServiceName("unknown_service:go"))
 	}
 	return opts
 }
