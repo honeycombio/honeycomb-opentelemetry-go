@@ -18,8 +18,11 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"strconv"
 
 	"github.com/honeycombio/opentelemetry-go-contrib/launcher"
+	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
+	"go.opentelemetry.io/otel/sdk/trace"
 )
 
 const (
@@ -33,7 +36,6 @@ const (
 
 func init() {
 	launcher.SetVendorOptions = getVendorOptionSetters
-
 	launcher.ValidateConfig = validateConfig
 }
 
@@ -61,6 +63,20 @@ func WithDataset(dataset string) launcher.Option {
 	}
 }
 
+// WithSampler() sets the sampler used to sample trace spans using a Honeycomb sample rate.
+// Sample rate is expressed as 1/X where x is the population size.
+func WithSampler(sampleRate int) launcher.Option {
+	return func(c *launcher.Config) {
+		c.Sampler = NewDeterministicSampler(sampleRate)
+	}
+}
+
+// WithDebugSpanExporter() determines whether a debug (stdout) traces exporter should be configured.
+func WithDebugSpanExporter() launcher.Option {
+	spanExporter, _ := stdouttrace.New(stdouttrace.WithPrettyPrint())
+	return launcher.WithSpanProcessor(trace.NewSimpleSpanProcessor(spanExporter))
+}
+
 func getVendorOptionSetters() []launcher.Option {
 	opts := []launcher.Option{
 		WithHoneycomb(),
@@ -70,6 +86,18 @@ func getVendorOptionSetters() []launcher.Option {
 	}
 	if dataset := os.Getenv("HONEYCOMB_DATASET"); dataset != "" {
 		opts = append(opts, WithDataset(dataset))
+	}
+	if sampleRateStr := os.Getenv("HONEYCOMB_SAMPLE_RATE"); sampleRateStr != "" {
+		sampleRate, err := strconv.Atoi(sampleRateStr)
+		if err == nil {
+			opts = append(opts, WithSampler(sampleRate))
+		}
+	}
+	if enabledStr := os.Getenv("OTEL_EXPORTER_DEBUG_ENABLED"); enabledStr != "" {
+		enabled, _ := strconv.ParseBool(enabledStr)
+		if enabled {
+			opts = append(opts, WithDebugSpanExporter())
+		}
 	}
 	return opts
 }

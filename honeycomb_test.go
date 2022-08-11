@@ -32,6 +32,7 @@ func freshConfig() *launcher.Config {
 		Resource:                        &resource.Resource{},
 		Logger:                          nil,
 		ShutdownFunctions:               []func(c *launcher.Config) error{},
+		Sampler:                         trace.AlwaysSample(),
 	}
 }
 
@@ -138,4 +139,35 @@ func TestHoneycombResourceAttributesAreSet(t *testing.T) {
 
 	assert.Equal(t, Version, config.ResourceAttributes["honeycomb.distro.version"])
 	assert.Equal(t, runtime.Version(), config.ResourceAttributes["honeycomb.distro.runtime_version"])
+}
+
+func TestConfigureDeterministicSampler(t *testing.T) {
+	// no env var - should use default sampler
+	config := freshConfig()
+	for _, setter := range getVendorOptionSetters() {
+		setter(config)
+	}
+	assert.Equal(t, "AlwaysOnSampler", config.Sampler.Description())
+
+	// set env var - should have deterministic sampler
+	t.Setenv("HONEYCOMB_SAMPLE_RATE", "1")
+	config = freshConfig()
+	for _, setter := range getVendorOptionSetters() {
+		setter(config)
+	}
+	assert.Equal(t, "DeterministicSampler", config.Sampler.Description())
+}
+
+func TestSettingExporterDebugEnabledAddsDebugExporter(t *testing.T) {
+	config := freshConfig()
+	t.Setenv("OTEL_EXPORTER_DEBUG_ENABLED", "true")
+
+	for _, setter := range getVendorOptionSetters() {
+		setter(config)
+	}
+
+	// it's really tought to determine if a simple span processor (private type)
+	// wrapping a stdouttrace span exporter has been configured
+	// Let's check we have at least configured a span processor for now
+	assert.Equal(t, 1, len(config.SpanProcessors))
 }
