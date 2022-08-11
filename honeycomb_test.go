@@ -146,3 +146,17 @@ func TestConfigureDeterministicSampler(t *testing.T) {
 	}
 	assert.Equal(t, "DeterministicSampler", config.Sampler.Description())
 }
+
+func TestSettingExporterDebugEnabledAddsDebugExporter(t *testing.T) {
+	config := freshConfig()
+	t.Setenv("OTEL_EXPORTER_DEBUG_ENABLED", "true")
+
+	for _, setter := range getVendorOptionSetters() {
+		setter(config)
+	}
+
+	// it's really tought to determine if a simple span processor (private type)
+	// wrapping a stdouttrace span exporter has been configured
+	// Let's check we have at least configured a span processor for now
+	assert.Equal(t, 1, len(config.SpanProcessors))
+}
