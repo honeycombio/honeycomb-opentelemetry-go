@@ -21,6 +21,12 @@ Latest release built with:
 - Multi-span attributes!
 - Dynamic attributes!
 
+## Where's most of the code?
+
+This package is a _layer_ on top of the core package, which you can find in our [fork of the opentelemetry-go-contrib repo](https://github.com/honeycombio/opentelemetry-go-contrib/tree/launcher). As such, it only containts Honeycomb-specific functionality.
+
+Our immedate goal is that our fork lives upstream in the opentelemetry-go-contrib project as a blessed, vendor-neutral way to get started.
+
 ## License
 
 [Apache 2.0 License](./LICENSE).
