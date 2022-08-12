@@ -1,4 +1,4 @@
-module github.com/honeycombio/otel/honeycomb
+module github.com/honeycombio/honeycomb-opentelemetry-go
 
 go 1.18
 

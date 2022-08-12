@@ -24,8 +24,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/honeycombio/honeycomb-opentelemetry-go"
 	"github.com/honeycombio/opentelemetry-go-contrib/launcher"
-	honeycomb "github.com/honeycombio/otel/honeycomb"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"

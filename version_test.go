@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/honeycombio/otel/honeycomb"
+	"github.com/honeycombio/honeycomb-opentelemetry-go"
 	"github.com/stretchr/testify/assert"
 )
 
