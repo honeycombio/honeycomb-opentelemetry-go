@@ -97,6 +97,7 @@ func getVendorOptionSetters() []launcher.Option {
 		enabled, _ := strconv.ParseBool(enabledStr)
 		if enabled {
 			opts = append(opts, WithDebugSpanExporter())
+			opts = append(opts, launcher.WithLogLevel("debug"))
 		}
 	}
 	if serviceName := os.Getenv("OTEL_SERVICE_NAME"); serviceName == "" {
