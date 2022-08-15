@@ -104,19 +104,19 @@ func TestValidateConfig(t *testing.T) {
 			desc:          "modern API key and a dataset",
 			apikey:        "123456789012345678901",
 			dataset:       "no thank you",
-			expectedError: fmt.Errorf("do not include dataset header for non-classic API keys"),
+			expectedError: fmt.Errorf(dontSetADatasetMessageMessage),
 		},
 		{
 			desc:          "empty API key",
 			apikey:        "",
 			dataset:       "doesn't matter",
-			expectedError: fmt.Errorf("missing x-honeycomb-team header"),
+			expectedError: fmt.Errorf(noApiKeyDetectedMessage),
 		},
 		{
 			desc:          "classic API key and no dataset",
 			apikey:        "12345678901234567890123456789012",
 			dataset:       "",
-			expectedError: fmt.Errorf("missing x-honeycomb-dataset header"),
+			expectedError: fmt.Errorf(classicKeyMissingDatasetMessage, "12345678901234567890123456789012"),
 		},
 	}
 	for _, tC := range testCases {
