@@ -111,14 +111,14 @@ func validateConfig(c *launcher.Config) error {
 
 	switch len(apikey) {
 	case 0:
-		return fmt.Errorf("missing x-honeycomb-team header")
+		return fmt.Errorf(noApiKeyDetectedMessage)
 	case 32: // classic
 		if dataset == "" {
-			return fmt.Errorf("missing x-honeycomb-dataset header")
+			return fmt.Errorf(classicKeyMissingDatasetMessage, apikey)
 		}
 	default:
 		if dataset != "" {
-			return fmt.Errorf("do not include dataset header for non-classic API keys")
+			return fmt.Errorf(dontSetADatasetMessageMessage)
 		}
 	}
 	return nil
