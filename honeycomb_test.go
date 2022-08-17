@@ -64,13 +64,16 @@ func TestSetVendorOptions(t *testing.T) {
 			expectedHeaders: map[string]string{
 				honeycombApiKeyHeader:  "atestkey",
 				honeycombDatasetHeader: "adataset",
+				otlpProtoVersionHeader: otlpProtoVersionValue,
 			},
 		},
 		{
-			desc:            "no API key or dataset",
-			apikey:          "",
-			dataset:         "",
-			expectedHeaders: map[string]string{},
+			desc:    "no API key or dataset",
+			apikey:  "",
+			dataset: "",
+			expectedHeaders: map[string]string{
+				otlpProtoVersionHeader: otlpProtoVersionValue,
+			},
 		},
 	}
 	for _, tC := range testCases {
@@ -150,15 +153,6 @@ func TestHoneycombResourceAttributesAreSet(t *testing.T) {
 
 	assert.Equal(t, Version, config.ResourceAttributes["honeycomb.distro.version"])
 	assert.Equal(t, runtime.Version(), config.ResourceAttributes["honeycomb.distro.runtime_version"])
-}
-
-func TestOTLPVersionIsSet(t *testing.T) {
-	config := freshConfig()
-	for _, setter := range getVendorOptionSetters() {
-		setter(config)
-	}
-
-	assert.Equal(t, otlpProtoVersionValue, config.Headers[otlpProtoVersionHeader])
 }
 
 func TestConfigureDeterministicSampler(t *testing.T) {
