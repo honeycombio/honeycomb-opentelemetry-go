@@ -44,8 +44,7 @@ func WithHoneycomb() launcher.Option {
 	return func(c *launcher.Config) {
 		c.ResourceAttributes[honeycombDistroVersionKey] = Version
 		c.ResourceAttributes[honeycombDistroRuntimeVersionKey] = runtime.Version()
-		c.TracesExporterEndpoint = DefaultSpanExporterEndpoint
-		c.MetricsExporterEndpoint = DefaultMetricExporterEndpoint
+		c.ExporterEndpoint = DefaultSpanExporterEndpoint
 	}
 }
 
