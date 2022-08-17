@@ -152,6 +152,15 @@ func TestHoneycombResourceAttributesAreSet(t *testing.T) {
 	assert.Equal(t, runtime.Version(), config.ResourceAttributes["honeycomb.distro.runtime_version"])
 }
 
+func TestOTLPVersionIsSet(t *testing.T) {
+	config := freshConfig()
+	for _, setter := range getVendorOptionSetters() {
+		setter(config)
+	}
+
+	assert.Equal(t, otlpProtoVersionValue, config.Headers[otlpProtoVersionHeader])
+}
+
 func TestConfigureDeterministicSampler(t *testing.T) {
 	// no env var - should use default sampler
 	config := freshConfig()
