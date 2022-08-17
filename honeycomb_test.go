@@ -179,3 +179,13 @@ func TestServiceNameDefaultsToUnknownServiceWhenNotSet(t *testing.T) {
 	}
 	assert.Equal(t, "unknown_service:go", config.ServiceName)
 }
+
+func TestSettingDebugAlsoSetsLogLevelToDebug(t *testing.T) {
+	t.Setenv("DEBUG", "true")
+	launcher.ValidateConfig = func(c *launcher.Config) error {
+		assert.Equal(t, c.LogLevel, "debug")
+		return nil
+	}
+	_, err := launcher.ConfigureOpenTelemetry()
+	assert.Nil(t, err)
+}
