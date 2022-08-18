@@ -64,13 +64,16 @@ func TestSetVendorOptions(t *testing.T) {
 			expectedHeaders: map[string]string{
 				honeycombApiKeyHeader:  "atestkey",
 				honeycombDatasetHeader: "adataset",
+				otlpProtoVersionHeader: otlpProtoVersionValue,
 			},
 		},
 		{
-			desc:            "no API key or dataset",
-			apikey:          "",
-			dataset:         "",
-			expectedHeaders: map[string]string{},
+			desc:    "no API key or dataset",
+			apikey:  "",
+			dataset: "",
+			expectedHeaders: map[string]string{
+				otlpProtoVersionHeader: otlpProtoVersionValue,
+			},
 		},
 	}
 	for _, tC := range testCases {

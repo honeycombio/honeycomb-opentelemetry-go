@@ -32,6 +32,8 @@ const (
 	honeycombDatasetHeader           = "x-honeycomb-dataset"
 	honeycombDistroVersionKey        = "honeycomb.distro.version"
 	honeycombDistroRuntimeVersionKey = "honeycomb.distro.runtime_version"
+	otlpProtoVersionHeader           = "x-otlp-version"
+	otlpProtoVersionValue            = "0.18.0"
 )
 
 func init() {
@@ -44,6 +46,7 @@ func WithHoneycomb() launcher.Option {
 	return func(c *launcher.Config) {
 		c.ResourceAttributes[honeycombDistroVersionKey] = Version
 		c.ResourceAttributes[honeycombDistroRuntimeVersionKey] = runtime.Version()
+		c.Headers[otlpProtoVersionHeader] = otlpProtoVersionValue
 		c.ExporterEndpoint = DefaultSpanExporterEndpoint
 	}
 }
