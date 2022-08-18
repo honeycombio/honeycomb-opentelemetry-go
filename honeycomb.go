@@ -80,6 +80,15 @@ func getVendorOptionSetters() []launcher.Option {
 	opts := []launcher.Option{
 		WithHoneycomb(),
 	}
+	if endpoint := os.Getenv("HONEYCOMB_API_ENDPOINT"); endpoint != "" {
+		opts = append(opts, launcher.WithExporterEndpoint(endpoint))
+	}
+	if endpoint := os.Getenv("HONEYCOMB_TRACES_API_ENDPOINT"); endpoint != "" {
+		opts = append(opts, launcher.WithSpanExporterEndpoint(endpoint))
+	}
+	if endpoint := os.Getenv("HONEYCOMB_METRICS_API_ENDPOINT"); endpoint != "" {
+		opts = append(opts, launcher.WithMetricExporterEndpoint(endpoint))
+	}
 	if apikey := os.Getenv("HONEYCOMB_API_KEY"); apikey != "" {
 		opts = append(opts, WithApiKey(apikey))
 	}
