@@ -10,14 +10,12 @@ import (
 	"time"
 
 	"go.opentelemetry.io/otel/sdk/trace"
-	"go.opentelemetry.io/otel/sdk/trace/tracetest"
 )
 
 var zeroTime time.Time
 
 var _ trace.SpanExporter = &Exporter{}
 
-// New creates an Exporter with the passed options.
 func NewSpanLinkExporter(apikey string, serviceName string) (*Exporter, error) {
 	client := &http.Client{}
 	req, reqErr := http.NewRequest("GET", "https://api.honeycomb.io/1/auth", nil)
@@ -82,24 +80,28 @@ type team struct {
 	Slug string `json:"slug"`
 }
 
-func getTraceLink(teamSlug string, environmentSlug string, serviceName string, traceID string) string {
+func getTraceLink(apikey string, teamSlug string, environmentSlug string, serviceName string, traceID string) string {
+	if isclassicApiKey(apikey) {
+		return fmt.Sprintf("http://ui.honeycomb.io/%s/datasets/%s/trace?trace_id=%s", teamSlug, serviceName, traceID)
+	}
 	return fmt.Sprintf("http://ui.honeycomb.io/%s/environments/%s/datasets/%s/trace?trace_id=%s", teamSlug, environmentSlug, serviceName, traceID)
 }
 
+// Export spans is required to implement the Exporter interface.
+// It does not actually export spans. Instead, it builds a link to
+// honeycomb for the trace that was created, then prints it out!
 func (e *Exporter) ExportSpans(ctx context.Context, spans []trace.ReadOnlySpan) error {
 	if len(spans) == 0 {
 		return nil
 	}
 
-	stubs := tracetest.SpanStubsFromReadOnlySpans(spans)
+	for i := range spans {
+		span := spans[i]
 
-	for i := range stubs {
-		stub := &stubs[i]
-
-		if !stub.Parent.SpanID().IsValid() {
-			fmt.Printf("Trace for %s\n", stub.Name)
-			traceId := stub.SpanContext.TraceID().String()
-			link := getTraceLink(e.teamSlug, e.environmentSlug, e.serviceName, traceId)
+		if !span.Parent().SpanID().IsValid() {
+			fmt.Printf("Trace for %s\n", span.Name())
+			traceId := span.SpanContext().TraceID().String()
+			link := getTraceLink(e.apiKey, e.teamSlug, e.environmentSlug, e.serviceName, traceId)
 			fmt.Printf("Honeycomb link: %s\n", link)
 		}
 	}
