@@ -108,7 +108,8 @@ func WithDebugSpanExporter() launcher.Option {
 }
 
 func WithLocalVisualizations(apikey string, serviceName string) launcher.Option {
-	return launcher.WithSpanProcessor(NewLocalVisualizationsSpanProcessor(apikey, serviceName, DefaultSpanExporterEndpoint))
+	exporter, _ := NewSpanLinkExporter(apikey, serviceName)
+	return launcher.WithSpanProcessor(trace.NewSimpleSpanProcessor(exporter))
 }
 
 func getVendorOptionSetters() []launcher.Option {
