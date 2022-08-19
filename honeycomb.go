@@ -173,7 +173,7 @@ func getVendorOptionSetters() []launcher.Option {
 
 	if enableLocalVisualizationsStr := os.Getenv("HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS"); enableLocalVisualizationsStr != "" {
 		enabled, _ := strconv.ParseBool(enableLocalVisualizationsStr)
-		if enabled && apikey != "" {
+		if enabled {
 			opts = append(opts, WithLocalVisualizations(apikey, serviceName))
 		}
 	}
