@@ -7,14 +7,9 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"time"
 
 	"go.opentelemetry.io/otel/sdk/trace"
 )
-
-var zeroTime time.Time
-
-var _ trace.SpanExporter = &Exporter{}
 
 func NewSpanLinkExporter(apikey string, serviceName string) (*Exporter, error) {
 	client := &http.Client{}
