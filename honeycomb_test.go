@@ -176,6 +176,7 @@ func TestConfigureDeterministicSampler(t *testing.T) {
 func TestSettingExporterDebugEnabledAddsDebugExporter(t *testing.T) {
 	config := freshConfig()
 	t.Setenv("DEBUG", "true")
+	t.Setenv("HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS", "false")
 
 	for _, setter := range getVendorOptionSetters() {
 		setter(config)
@@ -183,6 +184,20 @@ func TestSettingExporterDebugEnabledAddsDebugExporter(t *testing.T) {
 
 	// it's really tought to determine if a simple span processor (private type)
 	// wrapping a stdouttrace span exporter has been configured
+	// Let's check we have at least configured a span processor for now
+	assert.Equal(t, 1, len(config.SpanProcessors))
+}
+
+func TestSettingExporterEnableLocalVisualizationsEnabledAddsThatExporter(t *testing.T) {
+	config := freshConfig()
+	t.Setenv("DEBUG", "false")
+	t.Setenv("HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS", "true")
+
+	for _, setter := range getVendorOptionSetters() {
+		setter(config)
+	}
+
+	// Just like TestSettingExporterDebugEnabledAddsDebugExporter...
 	// Let's check we have at least configured a span processor for now
 	assert.Equal(t, 1, len(config.SpanProcessors))
 }
