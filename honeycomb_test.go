@@ -190,6 +190,10 @@ func TestSettingExportersAddsDebugAndLocalVizExporters(t *testing.T) {
 
 func TestServiceNameDefaultsToUnknownServiceWhenNotSet(t *testing.T) {
 	config := freshConfig()
+
+	// If you are running stuff locally and set this, it will mess up the test.
+	// So, we explicit set the env var to be empty.
+	t.Setenv("OTEL_SERVICE_NAME", "")
 	for _, setter := range getVendorOptionSetters() {
 		setter(config)
 	}
