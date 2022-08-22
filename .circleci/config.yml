@@ -1,9 +1,20 @@
 version: 2.1
 
+matrix_goversions: &matrix_goversions
+  matrix:
+    parameters:
+      goversion: ["17", "18", "19"]
+
+default_goversion: &default_goversion "18"
+
 jobs:
   test:
+    parameters:
+      goversion:
+        type: string
+        default: *default_goversion
     docker:
-      - image: cimg/go:1.18
+      - image: cimg/go:1.<< parameters.goversion >>
     steps:
       - checkout
       - restore_cache:
@@ -26,9 +37,22 @@ jobs:
             ghr -draft -n ${CIRCLE_TAG} -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${CIRCLE_TAG}
 
 workflows:
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - test:
+          <<: *matrix_goversions
+
   build:
     jobs:
       - test:
+          <<: *matrix_goversions
           filters:
             tags:
               only: /.*/
