@@ -218,3 +218,22 @@ func TestCanSetEndpointsUsingHoneycombEnvVars(t *testing.T) {
 	_, err := launcher.ConfigureOpenTelemetry()
 	assert.Nil(t, err)
 }
+
+func TestMetricsAreDisabledByDefault(t *testing.T) {
+	// disabled by default
+	launcher.ValidateConfig = func(c *launcher.Config) error {
+		assert.False(t, c.MetricsEnabled)
+		return nil
+	}
+	_, err := launcher.ConfigureOpenTelemetry()
+	assert.Nil(t, err)
+
+	// can be enabled
+	t.Setenv("OTEL_METRICS_ENABLED", "true")
+	launcher.ValidateConfig = func(c *launcher.Config) error {
+		assert.True(t, c.MetricsEnabled)
+		return nil
+	}
+	_, err = launcher.ConfigureOpenTelemetry()
+	assert.Nil(t, err)
+}
