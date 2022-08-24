@@ -6,6 +6,6 @@ const (
 	dontSetADatasetMessageMessage   string = "Dataset detected! Datasets are a Honeycomb Classic configuration value.\nUnset HONEYCOMB_DATASET or remove configuration code that sets a dataset."
 )
 
-func isclassicApiKey(apiKey string) bool {
+func isClassicApiKey(apiKey string) bool {
 	return len(apiKey) == 32
 }

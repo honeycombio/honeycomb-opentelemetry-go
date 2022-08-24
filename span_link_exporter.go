@@ -90,7 +90,7 @@ type team struct {
 }
 
 func getTraceLink(apikey string, teamSlug string, environmentSlug string, serviceName string, traceID string) string {
-	if isclassicApiKey(apikey) {
+	if isClassicApiKey(apikey) {
 		return fmt.Sprintf("http://ui.honeycomb.io/%s/datasets/%s/trace?trace_id=%s", teamSlug, serviceName, traceID)
 	}
 	return fmt.Sprintf("http://ui.honeycomb.io/%s/environments/%s/datasets/%s/trace?trace_id=%s", teamSlug, environmentSlug, serviceName, traceID)
