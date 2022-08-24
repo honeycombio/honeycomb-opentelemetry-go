@@ -33,7 +33,8 @@ func freshConfig() *launcher.Config {
 		ServiceName:                     "",
 		ServiceVersion:                  "",
 		Headers:                         map[string]string{},
-		HeadersFromEnv:                  "",
+		TracesHeaders:                   map[string]string{},
+		MetricsHeaders:                  map[string]string{},
 		MetricsExporterEndpoint:         "",
 		MetricsExporterEndpointInsecure: false,
 		MetricsEnabled:                  false,
@@ -213,6 +214,23 @@ func TestCanSetEndpointsUsingHoneycombEnvVars(t *testing.T) {
 		assert.Equal(t, "generic-endpoint", c.ExporterEndpoint)
 		assert.Equal(t, "traces-endpoint", c.TracesExporterEndpoint)
 		assert.Equal(t, "metrics-endpoint", c.MetricsExporterEndpoint)
+		return nil
+	}
+	_, err := launcher.ConfigureOpenTelemetry()
+	assert.Nil(t, err)
+}
+
+func TestCanSetTracesAndMetricsSpecificHeaders(t *testing.T) {
+	t.Setenv("HONEYCOMB_TRACES_APIKEY", "traces-apikey")
+	t.Setenv("HONEYCOMB_TRACES_DATASET", "traces-dataset")
+	t.Setenv("HONEYCOMB_METRICS_APIKEY", "metrics-apikey")
+	t.Setenv("HONEYCOMB_METRICS_DATASET", "metrics-dataset")
+
+	launcher.ValidateConfig = func(c *launcher.Config) error {
+		assert.Equal(t, "traces-apikey", c.TracesHeaders[honeycombApiKeyHeader])
+		assert.Equal(t, "traces-dataset", c.TracesHeaders[honeycombDatasetHeader])
+		assert.Equal(t, "metrics-apikey", c.MetricsHeaders[honeycombApiKeyHeader])
+		assert.Equal(t, "metrics-dataset", c.MetricsHeaders[honeycombDatasetHeader])
 		return nil
 	}
 	_, err := launcher.ConfigureOpenTelemetry()
