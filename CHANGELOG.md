@@ -1,5 +1,20 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.2.0 (2022-08-24)
+
+### Enhancements
+
+- Add local visualizations exporter (#66) | [@cartermp](https://github.com/cartermp)
+- Add support for separate traces and metrics API key and dataset (#72) | [@MikeGoldsmith](https://github.com/MikeGoldsmith)
+- Disable metrics by default (#70) | [@MikeGoldsmith](https://github.com/MikeGoldsmith)
+- Add support for Honeycomb endpoint environment variables (#65) | [@MikeGoldsmith](https://github.com/MikeGoldsmith)
+- Add OTLP version header (#64) | [@vreynolds](https://github.com/vreynolds)
+
+### Maintenance
+
+- Add webhook triggers example (#68) | [@vreynolds](https://github.com/vreynolds)
+- Add test matrix and nightly (#67) | [@vreynolds](https://github.com/vreynolds)
+
 ## v0.1.2 (2022-08-17)
 
 ## Fixed
