@@ -114,6 +114,15 @@ func getVendorOptionSetters() []launcher.Option {
 	if serviceName := os.Getenv("OTEL_SERVICE_NAME"); serviceName == "" {
 		opts = append(opts, launcher.WithServiceName("unknown_service:go"))
 	}
+	// default metrics off unless explicity enabled
+	metricsEnabled := false
+	if enabledStr := os.Getenv("OTEL_METRICS_ENABLED"); enabledStr != "" {
+		enabled, _ := strconv.ParseBool(enabledStr)
+		if enabled {
+			metricsEnabled = true
+		}
+	}
+	opts = append(opts, launcher.WithMetricsEnabled(metricsEnabled))
 	return opts
 }
 
