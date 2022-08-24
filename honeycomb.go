@@ -58,10 +58,38 @@ func WithApiKey(apikey string) launcher.Option {
 	}
 }
 
+// WithTracesApiKey() sets the authorization header appropriately for sending traces telemetry to Honeycomb's API endpoint.
+func WithTracesApiKey(apikey string) launcher.Option {
+	return func(c *launcher.Config) {
+		c.TracesHeaders[honeycombApiKeyHeader] = apikey
+	}
+}
+
+// WithMetricsApiKey() sets the authorization header appropriately for sending metrics telemetry to Honeycomb's API endpoint.
+func WithMetricsApiKey(apikey string) launcher.Option {
+	return func(c *launcher.Config) {
+		c.MetricsHeaders[honeycombApiKeyHeader] = apikey
+	}
+}
+
 // WithDataset() sets the header for routing telemetry to a named dataset at Honeycomb. (For trace data in Classic teams and for metrics only.)
 func WithDataset(dataset string) launcher.Option {
 	return func(c *launcher.Config) {
 		c.Headers[honeycombDatasetHeader] = dataset
+	}
+}
+
+// WithTracesDataset() sets the header for routing traces telemetry to a named dataset at Honeycomb.
+func WithTracesDataset(dataset string) launcher.Option {
+	return func(c *launcher.Config) {
+		c.TracesHeaders[honeycombDatasetHeader] = dataset
+	}
+}
+
+// WithMetricsDataset() sets the header for routing metrics telemetry to a named dataset at Honeycomb.
+func WithMetricsDataset(dataset string) launcher.Option {
+	return func(c *launcher.Config) {
+		c.MetricsHeaders[honeycombDatasetHeader] = dataset
 	}
 }
 
@@ -95,8 +123,20 @@ func getVendorOptionSetters() []launcher.Option {
 	if apikey := os.Getenv("HONEYCOMB_API_KEY"); apikey != "" {
 		opts = append(opts, WithApiKey(apikey))
 	}
+	if apikey := os.Getenv("HONEYCOMB_TRACES_APIKEY"); apikey != "" {
+		opts = append(opts, WithTracesApiKey(apikey))
+	}
+	if apikey := os.Getenv("HONEYCOMB_METRICS_APIKEY"); apikey != "" {
+		opts = append(opts, WithMetricsApiKey(apikey))
+	}
 	if dataset := os.Getenv("HONEYCOMB_DATASET"); dataset != "" {
 		opts = append(opts, WithDataset(dataset))
+	}
+	if dataset := os.Getenv("HONEYCOMB_TRACES_DATASET"); dataset != "" {
+		opts = append(opts, WithTracesDataset(dataset))
+	}
+	if dataset := os.Getenv("HONEYCOMB_METRICS_DATASET"); dataset != "" {
+		opts = append(opts, WithMetricsDataset(dataset))
 	}
 	if sampleRateStr := os.Getenv("SAMPLE_RATE"); sampleRateStr != "" {
 		sampleRate, err := strconv.Atoi(sampleRateStr)
