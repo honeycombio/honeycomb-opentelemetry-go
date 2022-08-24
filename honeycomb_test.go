@@ -173,7 +173,7 @@ func TestConfigureDeterministicSampler(t *testing.T) {
 	assert.Equal(t, "DeterministicSampler", config.Sampler.Description())
 }
 
-func TestSettingExporterDebugEnabledAddsDebugExporter(t *testing.T) {
+func TestSettingExportersAddsDebugExporter(t *testing.T) {
 	config := freshConfig()
 	t.Setenv("DEBUG", "true")
 
@@ -187,8 +187,23 @@ func TestSettingExporterDebugEnabledAddsDebugExporter(t *testing.T) {
 	assert.Equal(t, 1, len(config.SpanProcessors))
 }
 
+func TestSettingExportersAddsLocalVizExporter(t *testing.T) {
+	config := freshConfig()
+	t.Setenv("HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS", "true")
+
+	for _, setter := range getVendorOptionSetters() {
+		setter(config)
+	}
+
+	assert.Equal(t, 1, len(config.SpanProcessors))
+}
+
 func TestServiceNameDefaultsToUnknownServiceWhenNotSet(t *testing.T) {
 	config := freshConfig()
+
+	// If you are running stuff locally and set this, it will mess up the test.
+	// So, we explicit set the env var to be empty.
+	t.Setenv("OTEL_SERVICE_NAME", "")
 	for _, setter := range getVendorOptionSetters() {
 		setter(config)
 	}

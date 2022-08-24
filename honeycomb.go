@@ -111,6 +111,10 @@ func getVendorOptionSetters() []launcher.Option {
 	opts := []launcher.Option{
 		WithHoneycomb(),
 	}
+
+	apikey := ""
+	serviceName := "unknown_service:go"
+
 	if endpoint := os.Getenv("HONEYCOMB_API_ENDPOINT"); endpoint != "" {
 		opts = append(opts, launcher.WithExporterEndpoint(endpoint))
 	}
@@ -120,9 +124,10 @@ func getVendorOptionSetters() []launcher.Option {
 	if endpoint := os.Getenv("HONEYCOMB_METRICS_API_ENDPOINT"); endpoint != "" {
 		opts = append(opts, launcher.WithMetricsExporterEndpoint(endpoint))
 	}
-	if apikey := os.Getenv("HONEYCOMB_API_KEY"); apikey != "" {
+	if apikey = os.Getenv("HONEYCOMB_API_KEY"); apikey != "" {
 		opts = append(opts, WithApiKey(apikey))
 	}
+
 	if apikey := os.Getenv("HONEYCOMB_TRACES_APIKEY"); apikey != "" {
 		opts = append(opts, WithTracesApiKey(apikey))
 	}
@@ -132,6 +137,7 @@ func getVendorOptionSetters() []launcher.Option {
 	if dataset := os.Getenv("HONEYCOMB_DATASET"); dataset != "" {
 		opts = append(opts, WithDataset(dataset))
 	}
+
 	if dataset := os.Getenv("HONEYCOMB_TRACES_DATASET"); dataset != "" {
 		opts = append(opts, WithTracesDataset(dataset))
 	}
@@ -144,6 +150,7 @@ func getVendorOptionSetters() []launcher.Option {
 			opts = append(opts, WithSampler(sampleRate))
 		}
 	}
+
 	if enabledStr := os.Getenv("DEBUG"); enabledStr != "" {
 		enabled, _ := strconv.ParseBool(enabledStr)
 		if enabled {
@@ -151,9 +158,20 @@ func getVendorOptionSetters() []launcher.Option {
 			opts = append(opts, launcher.WithLogLevel("debug"))
 		}
 	}
-	if serviceName := os.Getenv("OTEL_SERVICE_NAME"); serviceName == "" {
+
+	if serviceName = os.Getenv("OTEL_SERVICE_NAME"); serviceName == "" {
 		opts = append(opts, launcher.WithServiceName("unknown_service:go"))
 	}
+
+	if enableLocalVisualizationsStr := os.Getenv("HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS"); enableLocalVisualizationsStr != "" {
+		enabled, _ := strconv.ParseBool(enableLocalVisualizationsStr)
+		if enabled {
+			exporter, _ := NewSpanLinkExporter(apikey, serviceName)
+			sp := launcher.WithSpanProcessor(trace.NewSimpleSpanProcessor(exporter))
+			opts = append(opts, sp)
+		}
+	}
+
 	// default metrics off unless explicity enabled
 	metricsEnabled := false
 	if enabledStr := os.Getenv("OTEL_METRICS_ENABLED"); enabledStr != "" {
