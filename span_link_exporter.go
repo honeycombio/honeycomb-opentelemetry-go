@@ -25,7 +25,13 @@ import (
 	"go.opentelemetry.io/otel/sdk/trace"
 )
 
-func NewSpanLinkExporter(apikey string, serviceName string) (*Exporter, error) {
+type spanLinkExporter struct {
+	linkUrl string
+}
+
+var _ trace.SpanExporter = (*spanLinkExporter)(nil)
+
+func NewSpanLinkExporter(apikey string, serviceName string) (*spanLinkExporter, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", "https://api.honeycomb.io/1/auth", nil)
 	if err != nil {
@@ -56,13 +62,9 @@ func NewSpanLinkExporter(apikey string, serviceName string) (*Exporter, error) {
 	}
 	linkUrl += fmt.Sprintf("/datasets/%s/trace?trace_id", serviceName)
 
-	return &Exporter{
+	return &spanLinkExporter{
 		linkUrl: linkUrl,
 	}, nil
-}
-
-type Exporter struct {
-	linkUrl string
 }
 
 type honeycombAuthResponse struct {
@@ -81,7 +83,7 @@ type team struct {
 // Export spans is required to implement the Exporter interface.
 // It does not actually export spans. Instead, it builds a link to
 // honeycomb for the trace that was created, then prints it out!
-func (e *Exporter) ExportSpans(ctx context.Context, spans []trace.ReadOnlySpan) error {
+func (e *spanLinkExporter) ExportSpans(ctx context.Context, spans []trace.ReadOnlySpan) error {
 	if len(spans) == 0 {
 		return nil
 	}
@@ -97,7 +99,7 @@ func (e *Exporter) ExportSpans(ctx context.Context, spans []trace.ReadOnlySpan) 
 }
 
 // Shutdown is called to stop the exporter, it preforms no action.
-func (e *Exporter) Shutdown(ctx context.Context) error {
+func (e *spanLinkExporter) Shutdown(ctx context.Context) error {
 	select {
 	case <-ctx.Done():
 		return ctx.Err()
