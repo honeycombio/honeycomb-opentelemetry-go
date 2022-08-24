@@ -56,15 +56,19 @@ func NewSpanLinkExporter(apikey string, serviceName string) (*spanLinkExporter, 
 		return nil, err
 	}
 
-	linkUrl := fmt.Sprintf("https://ui.honeycomb.io/%s", hnyAuthResp.Team.Slug)
-	if !isClassicApiKey(apikey) {
-		linkUrl += fmt.Sprintf("/environments/%s", hnyAuthResp.Environment.Slug)
-	}
-	linkUrl += fmt.Sprintf("/datasets/%s/trace?trace_id", serviceName)
-
+	linkUrl := buildTraceLinkUrl(isClassicApiKey(apikey), hnyAuthResp.Team.Slug, hnyAuthResp.Environment.Slug, serviceName)
 	return &spanLinkExporter{
 		linkUrl: linkUrl,
 	}, nil
+}
+
+func buildTraceLinkUrl(isClassic bool, team string, environment string, dataset string) string {
+	url := fmt.Sprintf("https://ui.honeycomb.io/%s", team)
+	if !isClassic {
+		url += fmt.Sprintf("/environments/%s", environment)
+	}
+	url += fmt.Sprintf("/datasets/%s/trace?trace_id", dataset)
+	return url
 }
 
 type honeycombAuthResponse struct {
