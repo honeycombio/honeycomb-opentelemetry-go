@@ -27,40 +27,42 @@ import (
 
 func NewSpanLinkExporter(apikey string, serviceName string) (*Exporter, error) {
 	client := &http.Client{}
-	req, reqErr := http.NewRequest("GET", "https://api.honeycomb.io/1/auth", nil)
-	if reqErr != nil {
-		return nil, reqErr
+	req, err := http.NewRequest("GET", "https://api.honeycomb.io/1/auth", nil)
+	if err != nil {
+		return nil, err
 	}
-
 	req.Header.Set("X-Honeycomb-Team", apikey)
 
-	resp, respErr := client.Do(req)
-	if respErr != nil {
-		return nil, respErr
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
 	}
 	defer resp.Body.Close()
 
-	b, err := io.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 	var hnyAuthResp honeycombAuthResponse
-	json.Unmarshal(b, &hnyAuthResp)
+	err = json.Unmarshal(body, &hnyAuthResp)
+	if err != nil {
+		return nil, err
+	}
+
+	linkUrl := fmt.Sprintf("https://ui.honeycomb.io/%s", hnyAuthResp.Team.Slug)
+	if !isClassicApiKey(apikey) {
+		linkUrl += fmt.Sprintf("/environments/%s", hnyAuthResp.Environment.Slug)
+	}
+	linkUrl += fmt.Sprintf("/datasets/%s/trace?trace_id", serviceName)
 
 	return &Exporter{
-		environmentSlug: hnyAuthResp.Environment.Slug,
-		teamSlug:        hnyAuthResp.Team.Slug,
-		apiKey:          apikey,
-		serviceName:     serviceName,
+		linkUrl: linkUrl,
 	}, nil
 }
 
 type Exporter struct {
-	teamSlug        string
-	environmentSlug string
-	apiKey          string
-	serviceName     string
+	linkUrl string
 }
 
 type honeycombAuthResponse struct {
@@ -76,13 +78,6 @@ type team struct {
 	Slug string `json:"slug"`
 }
 
-func getTraceLink(apikey string, teamSlug string, environmentSlug string, serviceName string, traceID string) string {
-	if isClassicApiKey(apikey) {
-		return fmt.Sprintf("http://ui.honeycomb.io/%s/datasets/%s/trace?trace_id=%s", teamSlug, serviceName, traceID)
-	}
-	return fmt.Sprintf("http://ui.honeycomb.io/%s/environments/%s/datasets/%s/trace?trace_id=%s", teamSlug, environmentSlug, serviceName, traceID)
-}
-
 // Export spans is required to implement the Exporter interface.
 // It does not actually export spans. Instead, it builds a link to
 // honeycomb for the trace that was created, then prints it out!
@@ -91,14 +86,10 @@ func (e *Exporter) ExportSpans(ctx context.Context, spans []trace.ReadOnlySpan) 
 		return nil
 	}
 
-	for i := range spans {
-		span := spans[i]
-
+	for _, span := range spans {
+		// if a root span (ie no parent span ID)
 		if !span.Parent().SpanID().IsValid() {
-			fmt.Printf("Trace for %s\n", span.Name())
-			traceId := span.SpanContext().TraceID().String()
-			link := getTraceLink(e.apiKey, e.teamSlug, e.environmentSlug, e.serviceName, traceId)
-			fmt.Printf("Honeycomb link: %s\n", link)
+			fmt.Printf("Trace for %s\nHoneycomb link: %s=%s\n", span.Name(), e.linkUrl, span.SpanContext().TraceID().String())
 		}
 	}
 
