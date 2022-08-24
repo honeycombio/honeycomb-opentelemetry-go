@@ -64,28 +64,15 @@ type Exporter struct {
 }
 
 type honeycombAuthResponse struct {
-	ApiKeyAccess string      `json:"api_key_access"`
-	Environment  environment `json:"environment"`
-	Team         team        `json:"team"`
-}
-
-type apiKeyAcces struct {
-	Events         bool `json:"events"`
-	Markers        bool `json:"markers"`
-	Triggers       bool `json:"triggers"`
-	Boards         bool `json:"boards"`
-	Queries        bool `json:"queries"`
-	Columns        bool `json:"columns"`
-	CreateDatasets bool `json:"createDatasets"`
+	Environment environment `json:"environment"`
+	Team        team        `json:"team"`
 }
 
 type environment struct {
-	Name string `json:"name"`
 	Slug string `json:"slug"`
 }
 
 type team struct {
-	Name string `json:"name"`
 	Slug string `json:"slug"`
 }
 
