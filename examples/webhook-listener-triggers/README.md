@@ -42,8 +42,7 @@ Here's an example of a notification that Honeycomb Triggers would send and this 
       "Result": 5
     }
   ],
-  "trigger_url": "https://ui.honeycomb.io/test-team/environments/telemetry/datasets/webhook-listener-triggers/triggers/abcdef",
-  "timestamp": "2022-08-20T16:25:18.73874-04:00"
+  "trigger_url": "https://ui.honeycomb.io/test-team/environments/telemetry/datasets/webhook-listener-triggers/triggers/abcdef"
 }
 ```
 
