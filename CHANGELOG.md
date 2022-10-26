@@ -1,5 +1,15 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.2.1 (2022-10-26)
+
+## Fixes
+
+- Update launcher to latest (#80) | @MikeGoldsmith
+
+## Maintenance
+
+- Remove timestamp field from example trigger hook (#81) | @passcod
+
 ## v0.2.0 (2022-08-24)
 
 ### Enhancements
