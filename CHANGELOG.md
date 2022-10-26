@@ -4,7 +4,7 @@
 
 ## Fixes
 
-- Update launcher to latest (#80) | @MikeGoldsmith
+- Remove unconditional debug statements (#80) | @MikeGoldsmith
 
 ## Maintenance
 
