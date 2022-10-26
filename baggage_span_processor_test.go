@@ -68,6 +68,6 @@ func TestBaggageSpanProcessorAppendsBaggageAttributes(t *testing.T) {
 
 	for _, attr := range exporter.spans[0].Attributes() {
 		assert.Equal(t, attribute.Key("baggage.test"), attr.Key)
-		assert.Equal(t, url.QueryEscape("baggage value"), attr.Value.AsString())
+		assert.Equal(t, "baggage value", attr.Value.AsString())
 	}
 }
