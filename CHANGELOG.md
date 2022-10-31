@@ -8,7 +8,7 @@
 
 ### Maintenance
 
-- Remove timestamp field from example trigger hook (#81)
+- Remove timestamp field from example trigger hook (#81) | @passcod
 - Update launcher to latest (#80, #86) | @MikeGoldsmith @vreynolds
   - fix unconditional debug statements
   - update OTEL packages
