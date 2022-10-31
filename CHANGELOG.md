@@ -1,5 +1,20 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.3.0 (2022-10-31)
+
+### Changes
+
+- Minimum required Go version is 1.18 (#84)
+
+### Maintenance
+
+- Remove timestamp field from example trigger hook (#81)
+- Update launcher to latest (#80, #86) | @MikeGoldsmith @vreynolds
+  - fix unconditional debug statements
+  - update OTEL packages
+- Bump go.opentelemetry.io/otel/exporters/stdout/stdouttrace from 1.9.0 to 1.11.1 (#84)
+- Bump go.opentelemetry.io/otel/sdk from 1.9.0 to 1.10.0 (#76)
+
 ## v0.2.0 (2022-08-24)
 
 ### Enhancements
