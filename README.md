@@ -11,7 +11,7 @@ It makes getting started with OpenTelemetry and Honeycomb easier!
 
 Latest release built with:
 
-- [OpenTelemetry](https://github.com/open-telemetry/opentelemetry-go/releases/tag/v1.9.0) version v1.9.0
+- [OpenTelemetry](https://github.com/open-telemetry/opentelemetry-go/releases/tag/v1.11.1) version v1.11.1/v0.33.0
 
 ## Why would I want to use this?
 
@@ -23,9 +23,9 @@ Latest release built with:
 
 ## Where's most of the code?
 
-This package is a _layer_ on top of the core package, which you can find in our [fork of the opentelemetry-go-contrib repo](https://github.com/honeycombio/opentelemetry-go-contrib/tree/launcher/launcher). As such, it only containts Honeycomb-specific functionality.
+This package is a _layer_ on top of the core package, which you can find in our [fork of the opentelemetry-go-contrib repo](https://github.com/honeycombio/opentelemetry-go-contrib/tree/launcher/launcher). As such, it only contains Honeycomb-specific functionality.
 
-Our immedate goal is that our fork lives upstream in the opentelemetry-go-contrib project as a blessed, vendor-neutral way to get started.
+Our immediate goal is that our fork lives upstream in the opentelemetry-go-contrib project as a blessed, vendor-neutral way to get started.
 
 ## License
 
