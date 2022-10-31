@@ -21,6 +21,7 @@ import (
 	"strconv"
 
 	"github.com/honeycombio/opentelemetry-go-contrib/launcher"
+
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/trace"
 )
@@ -33,7 +34,7 @@ const (
 	honeycombDistroVersionKey        = "honeycomb.distro.version"
 	honeycombDistroRuntimeVersionKey = "honeycomb.distro.runtime_version"
 	otlpProtoVersionHeader           = "x-otlp-version"
-	otlpProtoVersionValue            = "0.18.0"
+	otlpProtoVersionValue            = "0.19.0"
 )
 
 func init() {
