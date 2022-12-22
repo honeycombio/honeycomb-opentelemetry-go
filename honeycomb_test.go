@@ -15,7 +15,10 @@
 package honeycomb
 
 import (
+	"bytes"
 	"fmt"
+	"io"
+	"os"
 	"runtime"
 	"testing"
 
@@ -98,40 +101,40 @@ func TestSetVendorOptions(t *testing.T) {
 
 func TestValidateConfig(t *testing.T) {
 	testCases := []struct {
-		desc          string
-		apikey        string
-		dataset       string
-		expectedError error
+		desc                   string
+		apikey                 string
+		dataset                string
+		expectedWarningMessage string
 	}{
 		{
-			desc:          "modern API key and no dataset",
-			apikey:        "123456789012345678901",
-			dataset:       "",
-			expectedError: nil,
+			desc:                   "modern API key and no dataset",
+			apikey:                 "123456789012345678901",
+			dataset:                "",
+			expectedWarningMessage: "",
 		},
 		{
-			desc:          "classic API key and a dataset",
-			apikey:        "12345678901234567890123456789012",
-			dataset:       "is-set-horrah",
-			expectedError: nil,
+			desc:                   "classic API key and a dataset",
+			apikey:                 "12345678901234567890123456789012",
+			dataset:                "is-set-horrah",
+			expectedWarningMessage: "",
 		},
 		{
-			desc:          "modern API key and a dataset",
-			apikey:        "123456789012345678901",
-			dataset:       "no thank you",
-			expectedError: fmt.Errorf(dontSetADatasetMessageMessage),
+			desc:                   "modern API key and a dataset",
+			apikey:                 "123456789012345678901",
+			dataset:                "no thank you",
+			expectedWarningMessage: dontSetADatasetMessageMessage + "\n",
 		},
 		{
-			desc:          "empty API key",
-			apikey:        "",
-			dataset:       "doesn't matter",
-			expectedError: fmt.Errorf(noApiKeyDetectedMessage),
+			desc:                   "empty API key",
+			apikey:                 "",
+			dataset:                "doesn't matter",
+			expectedWarningMessage: noApiKeyDetectedMessage + "\n",
 		},
 		{
-			desc:          "classic API key and no dataset",
-			apikey:        "12345678901234567890123456789012",
-			dataset:       "",
-			expectedError: fmt.Errorf(classicKeyMissingDatasetMessage, "12345678901234567890123456789012"),
+			desc:                   "classic API key and no dataset",
+			apikey:                 "12345678901234567890123456789012",
+			dataset:                "",
+			expectedWarningMessage: fmt.Sprintf(classicKeyMissingDatasetMessage+"\n", "12345678901234567890123456789012"),
 		},
 	}
 	for _, tC := range testCases {
@@ -140,8 +143,22 @@ func TestValidateConfig(t *testing.T) {
 			aConfig.Headers[honeycombApiKeyHeader] = tC.apikey
 			aConfig.Headers[honeycombDatasetHeader] = tC.dataset
 
+			// Redirect stdout to a buffer
+			old := os.Stdout
+			r, w, _ := os.Pipe()
+			os.Stdout = w
+
 			err := validateConfig(aConfig)
-			assert.Equal(t, tC.expectedError, err)
+
+			// Reset stdout
+			w.Close()
+			os.Stdout = old
+
+			// Check the output
+			var gotOutput bytes.Buffer
+			io.Copy(&gotOutput, r)
+			assert.Equal(t, err, nil)
+			assert.Equal(t, tC.expectedWarningMessage, gotOutput.String())
 		})
 	}
 }
