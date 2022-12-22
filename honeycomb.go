@@ -191,14 +191,17 @@ func validateConfig(c *launcher.Config) error {
 
 	switch len(apikey) {
 	case 0:
-		return fmt.Errorf(noApiKeyDetectedMessage)
+		_, err := fmt.Println(noApiKeyDetectedMessage)
+		return err
 	case 32: // classic
 		if dataset == "" {
-			return fmt.Errorf(classicKeyMissingDatasetMessage, apikey)
+			_, err := fmt.Printf(classicKeyMissingDatasetMessage + "\n", apikey)
+			return err
 		}
 	default:
 		if dataset != "" {
-			return fmt.Errorf(dontSetADatasetMessageMessage)
+			_, err := fmt.Println(dontSetADatasetMessageMessage)
+			return err
 		}
 	}
 	return nil
