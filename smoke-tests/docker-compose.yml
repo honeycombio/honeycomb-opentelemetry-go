@@ -1,0 +1,35 @@
+version: '3.0'
+
+x-env-base: &env_base
+  HONEYCOMB_API_ENDPOINT: http://collector:4317
+  HONEYCOMB_API_KEY: bogus_key
+  # HONEYCOMB_DATASET: bogus_dataset
+  # HONEYCOMB_METRICS_DATASET: bogus_dataset
+  # OTEL_METRIC_EXPORT_INTERVAL: 5000
+  # OTEL_METRIC_EXPORT_TIMEOUT: 4000
+  OTEL_SERVICE_NAME: "webhook-listener-triggers"
+  # DEBUG: "true"
+
+x-app-base: &app_base
+  build:
+    context: ../
+    dockerfile: ./examples/webhook-listener-triggers/Dockerfile
+  image: honeycomb/webhook-listener-triggers
+  depends_on:
+    - collector
+
+services:
+  collector:
+    image: otel/opentelemetry-collector:0.52.0
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - "./collector/otel-collector-config.yaml:/etc/otel-collector-config.yaml"
+      - "./collector:/var/lib"
+
+  app-webhook:
+    <<: *app_base
+    environment:
+      <<: *env_base
+    ports:
+      - "127.0.0.1:8090:8090"
+
