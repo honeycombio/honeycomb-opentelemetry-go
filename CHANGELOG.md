@@ -1,5 +1,20 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.4.0 (2023-01-04)
+
+### Fixes
+
+- Don't error on misconfiguration; warn instead (#98) | [@cartermp](https://github.com/cartermp)
+
+### Maintenance
+
+- Update Launcher and OTel packages (#100) | [@MikeGoldsmith](https://github.com/MikeGoldsmith)
+- Fix typo in test file (#99) | [@JamieDanielson](https://github.com/jamiedanielson)
+- Update readme with latest otel version (#88) | [@vreynolds](https://github.com/vreynolds)
+- Update validate PR title workflow (#91) | [@pkanal](https://github.com/pkanal)
+- Validate PR title (#90) | [@pkanal](https://github.com/pkanal)
+- Give dependabot PRs a better title (#93) | [@kentquirk](https://github.com/kentquirk)
+
 ## v0.3.0 (2022-10-31)
 
 ### Changes
