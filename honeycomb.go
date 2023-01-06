@@ -15,7 +15,6 @@
 package honeycomb
 
 import (
-	"fmt"
 	"os"
 	"runtime"
 	"strconv"
@@ -189,20 +188,20 @@ func validateConfig(c *launcher.Config) error {
 	apikey := c.Headers[honeycombApiKeyHeader]
 	dataset := c.Headers[honeycombDatasetHeader]
 
-	switch len(apikey) {
-	case 0:
-		_, err := fmt.Println(noApiKeyDetectedMessage)
-		return err
-	case 32: // classic
-		if dataset == "" {
-			_, err := fmt.Printf(classicKeyMissingDatasetMessage + "\n", apikey)
-			return err
-		}
-	default:
-		if dataset != "" {
-			_, err := fmt.Println(dontSetADatasetMessageMessage)
-			return err
+	if c.Logger != nil {
+		switch len(apikey) {
+		case 0:
+			c.Logger.Debugf(noApiKeyDetectedMessage)
+		case 32: // classic
+			if dataset == "" {
+				c.Logger.Debugf("%s\n%s", classicKeyMissingDatasetMessage, apikey)
+			}
+		default:
+			if dataset != "" {
+				c.Logger.Debugf(dontSetADatasetMessageMessage)
+			}
 		}
 	}
+
 	return nil
 }
