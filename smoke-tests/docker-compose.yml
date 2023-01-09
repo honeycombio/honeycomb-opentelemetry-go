@@ -8,7 +8,7 @@ x-env-base: &env_base
   # OTEL_METRIC_EXPORT_INTERVAL: 5000
   # OTEL_METRIC_EXPORT_TIMEOUT: 4000
   OTEL_SERVICE_NAME: "webhook-listener-triggers"
-  # DEBUG: "true"
+  DEBUG: "true"
 
 x-app-base: &app_base
   build:
@@ -26,10 +26,19 @@ services:
       - "./collector/otel-collector-config.yaml:/etc/otel-collector-config.yaml"
       - "./collector:/var/lib"
 
-  app-webhook:
+  app-sdk-http:
     <<: *app_base
     environment:
       <<: *env_base
+      HONEYCOMB_API_ENDPOINT: http://collector:4318
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
     ports:
       - "127.0.0.1:8090:8090"
 
+  # app-sdk-grpc:
+  #   <<: *app_base
+  #   environment:
+  #     <<: *env_base
+  #     OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+  #   ports:
+  #     - "127.0.0.1:8090:8090"

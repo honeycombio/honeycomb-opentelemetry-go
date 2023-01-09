@@ -2,7 +2,7 @@
 
 load test_helpers/utilities
 
-CONTAINER_NAME="app-webhook"
+CONTAINER_NAME="app-sdk-http"
 TRACER_NAME="hello-world-tracer"
 METER_NAME="hello-world-meter"
 
