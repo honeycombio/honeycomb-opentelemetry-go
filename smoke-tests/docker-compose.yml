@@ -35,10 +35,10 @@ services:
     ports:
       - "127.0.0.1:8090:8090"
 
-  # app-sdk-grpc:
-  #   <<: *app_base
-  #   environment:
-  #     <<: *env_base
-  #     OTEL_EXPORTER_OTLP_PROTOCOL: grpc
-  #   ports:
-  #     - "127.0.0.1:8090:8090"
+  app-sdk-grpc:
+    <<: *app_base
+    environment:
+      <<: *env_base
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+    ports:
+      - "127.0.0.1:8090:8090"
