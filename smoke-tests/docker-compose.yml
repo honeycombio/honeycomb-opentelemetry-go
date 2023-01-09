@@ -1,7 +1,7 @@
 version: '3.0'
 
 x-env-base: &env_base
-  HONEYCOMB_API_ENDPOINT: http://collector:4317
+  HONEYCOMB_API_ENDPOINT: collector:4317
   HONEYCOMB_API_KEY: bogus_key
   # HONEYCOMB_DATASET: bogus_dataset
   # HONEYCOMB_METRICS_DATASET: bogus_dataset
@@ -30,7 +30,7 @@ services:
     <<: *app_base
     environment:
       <<: *env_base
-      HONEYCOMB_API_ENDPOINT: http://collector:4318
+      HONEYCOMB_API_ENDPOINT: collector:4318
       OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
     ports:
       - "127.0.0.1:8090:8090"

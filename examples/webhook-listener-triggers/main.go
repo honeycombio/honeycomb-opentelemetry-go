@@ -79,6 +79,7 @@ func main() {
 	shutdown, err := launcher.ConfigureOpenTelemetry(
 		launcher.WithServiceName("webhook-listener-triggers"),
 		launcher.WithMetricsEnabled(false),
+		launcher.WithExporterInsecure(true),
 	)
 	defer shutdown()
 
