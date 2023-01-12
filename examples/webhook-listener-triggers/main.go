@@ -79,6 +79,7 @@ func main() {
 	shutdown, err := launcher.ConfigureOpenTelemetry(
 		launcher.WithServiceName("webhook-listener-triggers"),
 		launcher.WithMetricsEnabled(false),
+		launcher.WithExporterInsecure(true),
 	)
 	defer shutdown()
 
@@ -96,7 +97,7 @@ func main() {
 	r.HandleFunc("/", a.defaultPath)
 
 	listenAddr := fmt.Sprintf(":%d", a.conf.Port)
-	log.Printf("Serving app on localhost:%d ....\n", a.conf.Port)
+	log.Printf("Now listening on:%d ....\n", a.conf.Port)
 	log.Fatal(http.ListenAndServe(listenAddr, r))
 }
 
