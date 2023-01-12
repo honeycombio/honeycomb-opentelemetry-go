@@ -94,7 +94,6 @@ workflows:
       - publish_github:
           context: Honeycomb Secrets for Public Repos
           requires:
-            - test
             - smoke_test
           filters:
             tags:
