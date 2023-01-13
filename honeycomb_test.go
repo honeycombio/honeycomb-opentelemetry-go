@@ -15,10 +15,6 @@
 package honeycomb
 
 import (
-	"bytes"
-	"fmt"
-	"io"
-	"os"
 	"runtime"
 	"testing"
 
@@ -101,40 +97,49 @@ func TestSetVendorOptions(t *testing.T) {
 
 func TestValidateConfig(t *testing.T) {
 	testCases := []struct {
-		desc                   string
-		apikey                 string
-		dataset                string
-		expectedWarningMessage string
+		desc                 string
+		apikey               string
+		dataset              string
+		expectedLoggerFormat string
+		expectedLoggerValues []interface{}
 	}{
 		{
-			desc:                   "modern API key and no dataset",
-			apikey:                 "123456789012345678901",
-			dataset:                "",
-			expectedWarningMessage: "",
+			desc:                 "modern API key and no dataset",
+			apikey:               "123456789012345678901",
+			dataset:              "",
+			expectedLoggerFormat: "",
+			expectedLoggerValues: nil,
 		},
 		{
-			desc:                   "classic API key and a dataset",
-			apikey:                 "12345678901234567890123456789012",
-			dataset:                "is-set-horrah",
-			expectedWarningMessage: "",
+			desc:                 "classic API key and a dataset",
+			apikey:               "12345678901234567890123456789012",
+			dataset:              "is-set-horrah",
+			expectedLoggerFormat: "",
+			expectedLoggerValues: nil,
 		},
 		{
-			desc:                   "modern API key and a dataset",
-			apikey:                 "123456789012345678901",
-			dataset:                "no thank you",
-			expectedWarningMessage: dontSetADatasetMessageMessage + "\n",
+			desc:                 "modern API key and a dataset",
+			apikey:               "123456789012345678901",
+			dataset:              "no thank you",
+			expectedLoggerFormat: dontSetADatasetMessageMessage,
+			expectedLoggerValues: nil,
 		},
 		{
-			desc:                   "empty API key",
-			apikey:                 "",
-			dataset:                "doesn't matter",
-			expectedWarningMessage: noApiKeyDetectedMessage + "\n",
+			desc:                 "empty API key",
+			apikey:               "",
+			dataset:              "doesn't matter",
+			expectedLoggerFormat: noApiKeyDetectedMessage,
+			expectedLoggerValues: nil,
 		},
 		{
-			desc:                   "classic API key and no dataset",
-			apikey:                 "12345678901234567890123456789012",
-			dataset:                "",
-			expectedWarningMessage: fmt.Sprintf(classicKeyMissingDatasetMessage+"\n", "12345678901234567890123456789012"),
+			desc:                 "classic API key and no dataset",
+			apikey:               "12345678901234567890123456789012",
+			dataset:              "",
+			expectedLoggerFormat: "%s\n%s",
+			expectedLoggerValues: []interface{}{
+				classicKeyMissingDatasetMessage,
+				"12345678901234567890123456789012",
+			},
 		},
 	}
 	for _, tC := range testCases {
@@ -143,24 +148,32 @@ func TestValidateConfig(t *testing.T) {
 			aConfig.Headers[honeycombApiKeyHeader] = tC.apikey
 			aConfig.Headers[honeycombDatasetHeader] = tC.dataset
 
-			// Redirect stdout to a buffer
-			old := os.Stdout
-			r, w, _ := os.Pipe()
-			os.Stdout = w
+			logger := &captureLogger{}
+
+			aConfig.Logger = logger
 
 			err := validateConfig(aConfig)
 
-			// Reset stdout
-			w.Close()
-			os.Stdout = old
-
 			// Check the output
-			var gotOutput bytes.Buffer
-			io.Copy(&gotOutput, r)
 			assert.Equal(t, err, nil)
-			assert.Equal(t, tC.expectedWarningMessage, gotOutput.String())
+			assert.Equal(t, tC.expectedLoggerFormat, logger.Format)
+			assert.Equal(t, tC.expectedLoggerValues, logger.Values)
 		})
 	}
+}
+
+type captureLogger struct {
+	Format string
+	Values []interface{}
+}
+
+func (l *captureLogger) Fatalf(format string, v ...interface{}) {
+	l.Format = format
+	l.Values = v
+}
+func (l *captureLogger) Debugf(format string, v ...interface{}) {
+	l.Format = format
+	l.Values = v
 }
 
 func TestHoneycombResourceAttributesAreSet(t *testing.T) {
