@@ -18,7 +18,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/honeycombio/opentelemetry-go-contrib/launcher"
+	"github.com/honeycombio/otel-launcher-go/launcher"
 	"github.com/stretchr/testify/assert"
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"

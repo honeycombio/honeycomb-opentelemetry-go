@@ -19,7 +19,7 @@ import (
 	"runtime"
 	"strconv"
 
-	"github.com/honeycombio/opentelemetry-go-contrib/launcher"
+	"github.com/honeycombio/otel-launcher-go/launcher"
 
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/trace"

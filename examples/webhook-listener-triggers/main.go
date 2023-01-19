@@ -14,7 +14,7 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
 
 	"github.com/gorilla/mux"
-	"github.com/honeycombio/opentelemetry-go-contrib/launcher"
+	"github.com/honeycombio/otel-launcher-go/launcher"
 )
 
 // Config configures this application
