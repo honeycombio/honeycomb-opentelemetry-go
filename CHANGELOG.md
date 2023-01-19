@@ -10,6 +10,7 @@
 
 - Add smoke test to circle (#107) | [@JamieDanielson](https://github.com/jamiedanielson)
 - Add smoke tests for traces (#102) | [@JamieDanielson](https://github.com/jamiedanielson)
+- Update launcher to use new repo (#109) | [@MikeGoldsmith](https://github.com/MikeGoldsmith)
 
 ## v0.4.0 (2023-01-04)
 
