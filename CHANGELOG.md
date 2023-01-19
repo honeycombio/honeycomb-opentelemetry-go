@@ -1,5 +1,17 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.4.1 (2023-01-19)
+
+### Fixes
+
+- Use configured logger to print messages (#103) | [@martin308](https://github.com/martin308)
+
+### Maintenance
+
+- Add smoke test to circle (#107) | [@JamieDanielson](https://github.com/jamiedanielson)
+- Add smoke tests for traces (#102) | [@JamieDanielson](https://github.com/jamiedanielson)
+- Update launcher to use new repo (#109) | [@MikeGoldsmith](https://github.com/MikeGoldsmith)
+
 ## v0.4.0 (2023-01-04)
 
 ### Fixes
