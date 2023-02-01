@@ -1,5 +1,9 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.4.2 (2023-02-01)
+
+- chore: update to latest launcher and otel pkgs (#114) | [@cartermp](https://github.com/cartermp)
+
 ## v0.4.1 (2023-01-19)
 
 ### Fixes
