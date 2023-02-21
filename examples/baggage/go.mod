@@ -1,17 +1,15 @@
-module github.com/honeycombio/honeycomb-opentelemetry-go/examples/webhook-listener-triggers
+module github.com/honeycombio/honeycomb-opentelemetry-go/examples/baggage
 
-go 1.18
+go 1.19
 
 require (
-	github.com/gorilla/mux v1.8.0
 	github.com/honeycombio/honeycomb-opentelemetry-go v0.4.2
 	github.com/honeycombio/otel-launcher-go v0.2.0
-	go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.38.0
+	go.opentelemetry.io/otel v1.12.0
 )
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.0 // indirect
-	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
@@ -28,7 +26,6 @@ require (
 	go.opentelemetry.io/contrib/instrumentation/runtime v0.38.0 // indirect
 	go.opentelemetry.io/contrib/propagators/b3 v1.13.0 // indirect
 	go.opentelemetry.io/contrib/propagators/ot v1.13.0 // indirect
-	go.opentelemetry.io/otel v1.12.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/internal/retry v1.12.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric v0.35.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v0.35.0 // indirect
