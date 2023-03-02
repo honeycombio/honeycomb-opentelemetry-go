@@ -1,6 +1,20 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.5.0 (2023-03-02)
+
+### Maintenance
+
+- chore: Rename webapp example to baggage, give it a module (#116) | [@cartermp](https://github.com/cartermp)
+- maint: Add go.work to manage multiple modules (#117) | [@cartermp](https://github.com/cartermp)
+- maint(deps): update otel deps to 1.14.0, launcher to 0.3.0 (#125) | [@JamieDanielson](https://github.com/jamiedanielson)
+- maint(deps): bump github.com/stretchr/testify from 1.8.1 to 1.8.2 (#123)
+- build(deps): bump golang.org/x/net from 0.4.0 to 0.7.0 in /examples/webhook-listener-triggers (#120)
+- build(deps): bump golang.org/x/net from 0.4.0 to 0.7.0 in /examples/baggage (#119)
+- maint(deps): bump golang.org/x/net from 0.4.0 to 0.7.0 (#118)
+
 ## v0.4.2 (2023-02-01)
+
+### Maintenance
 
 - chore: update to latest launcher and otel pkgs (#114) | [@cartermp](https://github.com/cartermp)
 
