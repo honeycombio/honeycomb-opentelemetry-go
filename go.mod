@@ -5,9 +5,9 @@ go 1.18
 require (
 	github.com/honeycombio/otel-launcher-go v0.2.0
 	github.com/stretchr/testify v1.8.2
-	go.opentelemetry.io/otel v1.12.0
-	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.12.0
-	go.opentelemetry.io/otel/sdk v1.12.0
+	go.opentelemetry.io/otel v1.14.0
+	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.14.0
+	go.opentelemetry.io/otel/sdk v1.14.0
 )
 
 require (
@@ -39,7 +39,7 @@ require (
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.12.0 // indirect
 	go.opentelemetry.io/otel/metric v0.35.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v0.35.0 // indirect
-	go.opentelemetry.io/otel/trace v1.12.0 // indirect
+	go.opentelemetry.io/otel/trace v1.14.0 // indirect
 	go.opentelemetry.io/proto/otlp v0.19.0 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
