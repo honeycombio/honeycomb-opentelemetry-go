@@ -3,7 +3,7 @@ module github.com/honeycombio/honeycomb-opentelemetry-go
 go 1.18
 
 require (
-	github.com/honeycombio/otel-launcher-go v0.3.1
+	github.com/honeycombio/otel-launcher-go v1.6.0
 	github.com/stretchr/testify v1.8.2
 	go.opentelemetry.io/otel v1.14.0
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.14.0
