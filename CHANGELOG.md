@@ -1,5 +1,11 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.5.2 (2023-04-05)
+
+### Maintenance
+
+- maint: update launcher to 1.6.0 (#130) | [@JamieDanielson](https://github.com/jamiedanielson)
+
 ## v0.5.1 (2023-03-28)
 
 ### Maintenance
