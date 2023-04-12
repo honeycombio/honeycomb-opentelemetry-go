@@ -26,8 +26,7 @@ import (
 )
 
 const (
-	DefaultSpanExporterEndpoint      = "api.honeycomb.io:443"
-	DefaultMetricExporterEndpoint    = "api.honeycomb.io:443"
+	defaultExporterEndpoint          = "api.honeycomb.io:443"
 	honeycombApiKeyHeader            = "x-honeycomb-team"
 	honeycombDatasetHeader           = "x-honeycomb-dataset"
 	honeycombDistroVersionKey        = "honeycomb.distro.version"
@@ -39,6 +38,7 @@ const (
 func init() {
 	launcher.SetVendorOptions = getVendorOptionSetters
 	launcher.ValidateConfig = validateConfig
+	launcher.DefaultExporterEndpoint = defaultExporterEndpoint
 }
 
 // WithHoneycomb() sets the destination for traces and metrics to Honeycomb's API endpoint.
@@ -47,7 +47,6 @@ func WithHoneycomb() launcher.Option {
 		c.ResourceAttributes[honeycombDistroVersionKey] = Version
 		c.ResourceAttributes[honeycombDistroRuntimeVersionKey] = runtime.Version()
 		c.Headers[otlpProtoVersionHeader] = otlpProtoVersionValue
-		c.ExporterEndpoint = DefaultSpanExporterEndpoint
 	}
 }
 

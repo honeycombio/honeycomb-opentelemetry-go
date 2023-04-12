@@ -86,10 +86,6 @@ func TestSetVendorOptions(t *testing.T) {
 			for _, setter := range getVendorOptionSetters() {
 				setter(aConfig)
 			}
-
-			assert.Equal(t, DefaultSpanExporterEndpoint, aConfig.ExporterEndpoint,
-				"Trace & metric data should be configured to target the Honeycomb API endpoint.",
-			)
 			assert.Equal(t, tC.expectedHeaders, aConfig.Headers)
 		})
 	}
@@ -259,6 +255,21 @@ func TestCanSetEndpointsUsingHoneycombEnvVars(t *testing.T) {
 		assert.Equal(t, "generic-endpoint", c.ExporterEndpoint)
 		assert.Equal(t, "traces-endpoint", c.TracesExporterEndpoint)
 		assert.Equal(t, "metrics-endpoint", c.MetricsExporterEndpoint)
+		return nil
+	}
+	_, err := launcher.ConfigureOpenTelemetry()
+	assert.Nil(t, err)
+}
+
+func TestCanSetEndpointsUsingOTelEnvVars(t *testing.T) {
+	t.Setenv("OTEL_EXPORTER_OTLP_ENDPOINT", "otel-generic-endpoint")
+	t.Setenv("OTEL_EXPORTER_OTLP_TRACES_ENDPOINT", "otel-traces-endpoint")
+	t.Setenv("OTEL_EXPORTER_OTLP_METRICS_ENDPOINT", "otel-metrics-endpoint")
+
+	launcher.ValidateConfig = func(c *launcher.Config) error {
+		assert.Equal(t, "otel-generic-endpoint", c.ExporterEndpoint)
+		assert.Equal(t, "otel-traces-endpoint", c.TracesExporterEndpoint)
+		assert.Equal(t, "otel-metrics-endpoint", c.MetricsExporterEndpoint)
 		return nil
 	}
 	_, err := launcher.ConfigureOpenTelemetry()
