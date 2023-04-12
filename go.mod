@@ -3,7 +3,7 @@ module github.com/honeycombio/honeycomb-opentelemetry-go
 go 1.18
 
 require (
-	github.com/honeycombio/otel-launcher-go v1.6.0
+	github.com/honeycombio/otel-launcher-go v1.7.0
 	github.com/stretchr/testify v1.8.2
 	go.opentelemetry.io/otel v1.14.0
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.14.0
@@ -21,7 +21,7 @@ require (
 	github.com/lufia/plan9stats v0.0.0-20220913051719-115f729f3c8c // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20220216144756-c35f1ee13d7c // indirect
-	github.com/sethvargo/go-envconfig v0.8.2 // indirect
+	github.com/sethvargo/go-envconfig v0.9.0 // indirect
 	github.com/shirou/gopsutil/v3 v3.23.1 // indirect
 	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tklauser/numcpus v0.6.0 // indirect
@@ -43,11 +43,11 @@ require (
 	go.opentelemetry.io/proto/otlp v0.19.0 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
-	golang.org/x/net v0.7.0 // indirect
-	golang.org/x/sys v0.5.0 // indirect
-	golang.org/x/text v0.7.0 // indirect
+	golang.org/x/net v0.8.0 // indirect
+	golang.org/x/sys v0.6.0 // indirect
+	golang.org/x/text v0.8.0 // indirect
 	google.golang.org/genproto v0.0.0-20230110181048-76db0878b65f // indirect
-	google.golang.org/grpc v1.53.0 // indirect
+	google.golang.org/grpc v1.54.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
