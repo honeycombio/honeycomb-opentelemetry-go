@@ -261,6 +261,21 @@ func TestCanSetEndpointsUsingHoneycombEnvVars(t *testing.T) {
 	assert.Nil(t, err)
 }
 
+func TestCanSetEndpointsUsingOTelEnvVars(t *testing.T) {
+	t.Setenv("OTEL_EXPORTER_OTLP_ENDPOINT", "otel-generic-endpoint")
+	t.Setenv("OTEL_EXPORTER_OTLP_TRACES_ENDPOINT", "otel-traces-endpoint")
+	t.Setenv("OTEL_EXPORTER_OTLP_METRICS_ENDPOINT", "otel-metrics-endpoint")
+
+	launcher.ValidateConfig = func(c *launcher.Config) error {
+		assert.Equal(t, "otel-generic-endpoint", c.ExporterEndpoint)
+		assert.Equal(t, "otel-traces-endpoint", c.TracesExporterEndpoint)
+		assert.Equal(t, "otel-metrics-endpoint", c.MetricsExporterEndpoint)
+		return nil
+	}
+	_, err := launcher.ConfigureOpenTelemetry()
+	assert.Nil(t, err)
+}
+
 func TestCanSetTracesAndMetricsSpecificHeaders(t *testing.T) {
 	t.Setenv("HONEYCOMB_TRACES_APIKEY", "traces-apikey")
 	t.Setenv("HONEYCOMB_TRACES_DATASET", "traces-dataset")
