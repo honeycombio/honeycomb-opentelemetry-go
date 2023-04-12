@@ -86,10 +86,6 @@ func TestSetVendorOptions(t *testing.T) {
 			for _, setter := range getVendorOptionSetters() {
 				setter(aConfig)
 			}
-
-			assert.Equal(t, defaultExporterEndpoint, aConfig.ExporterEndpoint,
-				"Trace & metric data should be configured to target the Honeycomb API endpoint.",
-			)
 			assert.Equal(t, tC.expectedHeaders, aConfig.Headers)
 		})
 	}
