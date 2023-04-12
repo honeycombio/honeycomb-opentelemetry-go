@@ -1,5 +1,12 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.5.3 (2023-04-12)
+
+### Maintenance
+
+- Update launcher & set default endpoint (#135) | [@MikeGoldsmith](https://github.com/MikeGoldsmith)
+- Add go 1.20 to ci (#133) | [@vreynolds](https://github.com/vreynolds)
+
 ## v0.5.2 (2023-04-05)
 
 ### Maintenance
