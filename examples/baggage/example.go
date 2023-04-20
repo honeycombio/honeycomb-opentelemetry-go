@@ -25,7 +25,7 @@ import (
 	"time"
 
 	"github.com/honeycombio/honeycomb-opentelemetry-go"
-	"github.com/honeycombio/otel-launcher-go/launcher"
+	"github.com/honeycombio/otel-config-go/otelconfig"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -41,8 +41,8 @@ func main() {
 	})
 	bsp := honeycomb.NewBaggageSpanProcessor()
 
-	shutdown, err := launcher.ConfigureOpenTelemetry(
-		launcher.WithSpanProcessor(dsp, bsp),
+	shutdown, err := otelconfig.ConfigureOpenTelemetry(
+		otelconfig.WithSpanProcessor(dsp, bsp),
 	)
 	defer shutdown()
 

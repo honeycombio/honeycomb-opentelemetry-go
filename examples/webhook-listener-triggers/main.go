@@ -14,7 +14,7 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
 
 	"github.com/gorilla/mux"
-	"github.com/honeycombio/otel-launcher-go/launcher"
+	"github.com/honeycombio/otel-config-go/otelconfig"
 )
 
 // Config configures this application
@@ -76,10 +76,10 @@ type App struct {
 }
 
 func main() {
-	shutdown, err := launcher.ConfigureOpenTelemetry(
-		launcher.WithServiceName("webhook-listener-triggers"),
-		launcher.WithMetricsEnabled(false),
-		launcher.WithExporterInsecure(true),
+	shutdown, err := otelconfig.ConfigureOpenTelemetry(
+		otelconfig.WithServiceName("webhook-listener-triggers"),
+		otelconfig.WithMetricsEnabled(false),
+		otelconfig.WithExporterInsecure(true),
 	)
 	defer shutdown()
 

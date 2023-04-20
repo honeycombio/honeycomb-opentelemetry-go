@@ -23,9 +23,9 @@ Latest release built with:
 
 ## Where's most of the code?
 
-This package is a _layer_ on top of the core package, which you can find in [here](https://github.com/honeycombio/otel-launcher-go). As such, this package only contains Honeycomb-specific functionality.
+This package is a _layer_ on top of the core package, which you can find in [here](https://github.com/honeycombio/otel-config-go). As such, this package only contains Honeycomb-specific functionality.
 
-Our goal is that the launcher be donated to the [opentelemetry-go-contrib](https://github.com/open-telemetry/opentelemetry-go-contrib) project as a blessed, vendor-neutral way to get started.
+Our goal is to have the `otel-config-go` package be donated to the [opentelemetry-go-contrib](https://github.com/open-telemetry/opentelemetry-go-contrib) project as a blessed, vendor-neutral way to get started.
 
 ## License
 

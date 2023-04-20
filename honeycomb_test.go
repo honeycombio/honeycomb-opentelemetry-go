@@ -18,14 +18,14 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/honeycombio/otel-launcher-go/launcher"
+	"github.com/honeycombio/otel-config-go/otelconfig"
 	"github.com/stretchr/testify/assert"
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
 )
 
-func freshConfig() *launcher.Config {
-	return &launcher.Config{
+func freshConfig() *otelconfig.Config {
+	return &otelconfig.Config{
 		TracesExporterEndpoint:          "",
 		TracesExporterEndpointInsecure:  false,
 		TracesEnabled:                   false,
@@ -45,7 +45,7 @@ func freshConfig() *launcher.Config {
 		SpanProcessors:                  []trace.SpanProcessor{},
 		Resource:                        &resource.Resource{},
 		Logger:                          nil,
-		ShutdownFunctions:               []func(c *launcher.Config) error{},
+		ShutdownFunctions:               []func(c *otelconfig.Config) error{},
 		Sampler:                         trace.AlwaysSample(),
 	}
 }
@@ -238,11 +238,11 @@ func TestServiceNameDefaultsToUnknownServiceWhenNotSet(t *testing.T) {
 
 func TestSettingDebugAlsoSetsLogLevelToDebug(t *testing.T) {
 	t.Setenv("DEBUG", "true")
-	launcher.ValidateConfig = func(c *launcher.Config) error {
+	otelconfig.ValidateConfig = func(c *otelconfig.Config) error {
 		assert.Equal(t, c.LogLevel, "debug")
 		return nil
 	}
-	_, err := launcher.ConfigureOpenTelemetry()
+	_, err := otelconfig.ConfigureOpenTelemetry()
 	assert.Nil(t, err)
 }
 
@@ -251,13 +251,13 @@ func TestCanSetEndpointsUsingHoneycombEnvVars(t *testing.T) {
 	t.Setenv("HONEYCOMB_TRACES_API_ENDPOINT", "traces-endpoint")
 	t.Setenv("HONEYCOMB_METRICS_API_ENDPOINT", "metrics-endpoint")
 
-	launcher.ValidateConfig = func(c *launcher.Config) error {
+	otelconfig.ValidateConfig = func(c *otelconfig.Config) error {
 		assert.Equal(t, "generic-endpoint", c.ExporterEndpoint)
 		assert.Equal(t, "traces-endpoint", c.TracesExporterEndpoint)
 		assert.Equal(t, "metrics-endpoint", c.MetricsExporterEndpoint)
 		return nil
 	}
-	_, err := launcher.ConfigureOpenTelemetry()
+	_, err := otelconfig.ConfigureOpenTelemetry()
 	assert.Nil(t, err)
 }
 
@@ -266,13 +266,13 @@ func TestCanSetEndpointsUsingOTelEnvVars(t *testing.T) {
 	t.Setenv("OTEL_EXPORTER_OTLP_TRACES_ENDPOINT", "otel-traces-endpoint")
 	t.Setenv("OTEL_EXPORTER_OTLP_METRICS_ENDPOINT", "otel-metrics-endpoint")
 
-	launcher.ValidateConfig = func(c *launcher.Config) error {
+	otelconfig.ValidateConfig = func(c *otelconfig.Config) error {
 		assert.Equal(t, "otel-generic-endpoint", c.ExporterEndpoint)
 		assert.Equal(t, "otel-traces-endpoint", c.TracesExporterEndpoint)
 		assert.Equal(t, "otel-metrics-endpoint", c.MetricsExporterEndpoint)
 		return nil
 	}
-	_, err := launcher.ConfigureOpenTelemetry()
+	_, err := otelconfig.ConfigureOpenTelemetry()
 	assert.Nil(t, err)
 }
 
@@ -282,32 +282,32 @@ func TestCanSetTracesAndMetricsSpecificHeaders(t *testing.T) {
 	t.Setenv("HONEYCOMB_METRICS_APIKEY", "metrics-apikey")
 	t.Setenv("HONEYCOMB_METRICS_DATASET", "metrics-dataset")
 
-	launcher.ValidateConfig = func(c *launcher.Config) error {
+	otelconfig.ValidateConfig = func(c *otelconfig.Config) error {
 		assert.Equal(t, "traces-apikey", c.TracesHeaders[honeycombApiKeyHeader])
 		assert.Equal(t, "traces-dataset", c.TracesHeaders[honeycombDatasetHeader])
 		assert.Equal(t, "metrics-apikey", c.MetricsHeaders[honeycombApiKeyHeader])
 		assert.Equal(t, "metrics-dataset", c.MetricsHeaders[honeycombDatasetHeader])
 		return nil
 	}
-	_, err := launcher.ConfigureOpenTelemetry()
+	_, err := otelconfig.ConfigureOpenTelemetry()
 	assert.Nil(t, err)
 }
 
 func TestMetricsAreDisabledByDefault(t *testing.T) {
 	// disabled by default
-	launcher.ValidateConfig = func(c *launcher.Config) error {
+	otelconfig.ValidateConfig = func(c *otelconfig.Config) error {
 		assert.False(t, c.MetricsEnabled)
 		return nil
 	}
-	_, err := launcher.ConfigureOpenTelemetry()
+	_, err := otelconfig.ConfigureOpenTelemetry()
 	assert.Nil(t, err)
 
 	// can be enabled
 	t.Setenv("OTEL_METRICS_ENABLED", "true")
-	launcher.ValidateConfig = func(c *launcher.Config) error {
+	otelconfig.ValidateConfig = func(c *otelconfig.Config) error {
 		assert.True(t, c.MetricsEnabled)
 		return nil
 	}
-	_, err = launcher.ConfigureOpenTelemetry()
+	_, err = otelconfig.ConfigureOpenTelemetry()
 	assert.Nil(t, err)
 }

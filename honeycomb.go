@@ -19,7 +19,7 @@ import (
 	"runtime"
 	"strconv"
 
-	"github.com/honeycombio/otel-launcher-go/launcher"
+	"github.com/honeycombio/otel-config-go/otelconfig"
 
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/trace"
@@ -36,14 +36,14 @@ const (
 )
 
 func init() {
-	launcher.SetVendorOptions = getVendorOptionSetters
-	launcher.ValidateConfig = validateConfig
-	launcher.DefaultExporterEndpoint = defaultExporterEndpoint
+	otelconfig.SetVendorOptions = getVendorOptionSetters
+	otelconfig.ValidateConfig = validateConfig
+	otelconfig.DefaultExporterEndpoint = defaultExporterEndpoint
 }
 
 // WithHoneycomb() sets the destination for traces and metrics to Honeycomb's API endpoint.
-func WithHoneycomb() launcher.Option {
-	return func(c *launcher.Config) {
+func WithHoneycomb() otelconfig.Option {
+	return func(c *otelconfig.Config) {
 		c.ResourceAttributes[honeycombDistroVersionKey] = Version
 		c.ResourceAttributes[honeycombDistroRuntimeVersionKey] = runtime.Version()
 		c.Headers[otlpProtoVersionHeader] = otlpProtoVersionValue
@@ -51,63 +51,63 @@ func WithHoneycomb() launcher.Option {
 }
 
 // WithApiKey() sets the authorization header appropriately for sending to Honeycomb's API endpoint.
-func WithApiKey(apikey string) launcher.Option {
-	return func(c *launcher.Config) {
+func WithApiKey(apikey string) otelconfig.Option {
+	return func(c *otelconfig.Config) {
 		c.Headers[honeycombApiKeyHeader] = apikey
 	}
 }
 
 // WithTracesApiKey() sets the authorization header appropriately for sending traces telemetry to Honeycomb's API endpoint.
-func WithTracesApiKey(apikey string) launcher.Option {
-	return func(c *launcher.Config) {
+func WithTracesApiKey(apikey string) otelconfig.Option {
+	return func(c *otelconfig.Config) {
 		c.TracesHeaders[honeycombApiKeyHeader] = apikey
 	}
 }
 
 // WithMetricsApiKey() sets the authorization header appropriately for sending metrics telemetry to Honeycomb's API endpoint.
-func WithMetricsApiKey(apikey string) launcher.Option {
-	return func(c *launcher.Config) {
+func WithMetricsApiKey(apikey string) otelconfig.Option {
+	return func(c *otelconfig.Config) {
 		c.MetricsHeaders[honeycombApiKeyHeader] = apikey
 	}
 }
 
 // WithDataset() sets the header for routing telemetry to a named dataset at Honeycomb. (For trace data in Classic teams and for metrics only.)
-func WithDataset(dataset string) launcher.Option {
-	return func(c *launcher.Config) {
+func WithDataset(dataset string) otelconfig.Option {
+	return func(c *otelconfig.Config) {
 		c.Headers[honeycombDatasetHeader] = dataset
 	}
 }
 
 // WithTracesDataset() sets the header for routing traces telemetry to a named dataset at Honeycomb.
-func WithTracesDataset(dataset string) launcher.Option {
-	return func(c *launcher.Config) {
+func WithTracesDataset(dataset string) otelconfig.Option {
+	return func(c *otelconfig.Config) {
 		c.TracesHeaders[honeycombDatasetHeader] = dataset
 	}
 }
 
 // WithMetricsDataset() sets the header for routing metrics telemetry to a named dataset at Honeycomb.
-func WithMetricsDataset(dataset string) launcher.Option {
-	return func(c *launcher.Config) {
+func WithMetricsDataset(dataset string) otelconfig.Option {
+	return func(c *otelconfig.Config) {
 		c.MetricsHeaders[honeycombDatasetHeader] = dataset
 	}
 }
 
 // WithSampler() sets the sampler used to sample trace spans using a Honeycomb sample rate.
 // Sample rate is expressed as 1/X where x is the population size.
-func WithSampler(sampleRate int) launcher.Option {
-	return func(c *launcher.Config) {
+func WithSampler(sampleRate int) otelconfig.Option {
+	return func(c *otelconfig.Config) {
 		c.Sampler = NewDeterministicSampler(sampleRate)
 	}
 }
 
 // WithDebugSpanExporter() determines whether a debug (stdout) traces exporter should be configured.
-func WithDebugSpanExporter() launcher.Option {
+func WithDebugSpanExporter() otelconfig.Option {
 	spanExporter, _ := stdouttrace.New(stdouttrace.WithPrettyPrint())
-	return launcher.WithSpanProcessor(trace.NewSimpleSpanProcessor(spanExporter))
+	return otelconfig.WithSpanProcessor(trace.NewSimpleSpanProcessor(spanExporter))
 }
 
-func getVendorOptionSetters() []launcher.Option {
-	opts := []launcher.Option{
+func getVendorOptionSetters() []otelconfig.Option {
+	opts := []otelconfig.Option{
 		WithHoneycomb(),
 	}
 
@@ -115,13 +115,13 @@ func getVendorOptionSetters() []launcher.Option {
 	serviceName := "unknown_service:go"
 
 	if endpoint := os.Getenv("HONEYCOMB_API_ENDPOINT"); endpoint != "" {
-		opts = append(opts, launcher.WithExporterEndpoint(endpoint))
+		opts = append(opts, otelconfig.WithExporterEndpoint(endpoint))
 	}
 	if endpoint := os.Getenv("HONEYCOMB_TRACES_API_ENDPOINT"); endpoint != "" {
-		opts = append(opts, launcher.WithTracesExporterEndpoint(endpoint))
+		opts = append(opts, otelconfig.WithTracesExporterEndpoint(endpoint))
 	}
 	if endpoint := os.Getenv("HONEYCOMB_METRICS_API_ENDPOINT"); endpoint != "" {
-		opts = append(opts, launcher.WithMetricsExporterEndpoint(endpoint))
+		opts = append(opts, otelconfig.WithMetricsExporterEndpoint(endpoint))
 	}
 	if apikey = os.Getenv("HONEYCOMB_API_KEY"); apikey != "" {
 		opts = append(opts, WithApiKey(apikey))
@@ -154,19 +154,19 @@ func getVendorOptionSetters() []launcher.Option {
 		enabled, _ := strconv.ParseBool(enabledStr)
 		if enabled {
 			opts = append(opts, WithDebugSpanExporter())
-			opts = append(opts, launcher.WithLogLevel("debug"))
+			opts = append(opts, otelconfig.WithLogLevel("debug"))
 		}
 	}
 
 	if serviceName = os.Getenv("OTEL_SERVICE_NAME"); serviceName == "" {
-		opts = append(opts, launcher.WithServiceName("unknown_service:go"))
+		opts = append(opts, otelconfig.WithServiceName("unknown_service:go"))
 	}
 
 	if enableLocalVisualizationsStr := os.Getenv("HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS"); enableLocalVisualizationsStr != "" {
 		enabled, _ := strconv.ParseBool(enableLocalVisualizationsStr)
 		if enabled {
 			exporter, _ := NewSpanLinkExporter(apikey, serviceName)
-			sp := launcher.WithSpanProcessor(trace.NewSimpleSpanProcessor(exporter))
+			sp := otelconfig.WithSpanProcessor(trace.NewSimpleSpanProcessor(exporter))
 			opts = append(opts, sp)
 		}
 	}
@@ -179,11 +179,11 @@ func getVendorOptionSetters() []launcher.Option {
 			metricsEnabled = true
 		}
 	}
-	opts = append(opts, launcher.WithMetricsEnabled(metricsEnabled))
+	opts = append(opts, otelconfig.WithMetricsEnabled(metricsEnabled))
 	return opts
 }
 
-func validateConfig(c *launcher.Config) error {
+func validateConfig(c *otelconfig.Config) error {
 	apikey := c.Headers[honeycombApiKeyHeader]
 	dataset := c.Headers[honeycombDatasetHeader]
 
