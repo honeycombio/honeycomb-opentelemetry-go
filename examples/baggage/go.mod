@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/honeycombio/honeycomb-opentelemetry-go v0.5.2
-	github.com/honeycombio/otel-launcher-go v1.7.0
+	github.com/honeycombio/otel-config-go v1.8.0
 	go.opentelemetry.io/otel v1.14.0
 )
 
