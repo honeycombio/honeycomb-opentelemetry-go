@@ -4,7 +4,7 @@
 
 ### Maintenance
 
-- maint: Update launcher & set default endpoint (#135) | @(goldsmith.mike@gmail.com)
+- maint: Update launcher & set default endpoint (#135) | [@MikeGoldsmith](https://github.com/MikeGoldsmith)
 
 ## v0.5.3 (2023-04-12)
 
