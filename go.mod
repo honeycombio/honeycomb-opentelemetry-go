@@ -1,6 +1,6 @@
 module github.com/honeycombio/honeycomb-opentelemetry-go
 
-go 1.18
+go 1.20
 
 require (
 	github.com/honeycombio/otel-config-go v1.8.0
