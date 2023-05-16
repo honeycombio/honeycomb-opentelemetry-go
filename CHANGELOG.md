@@ -1,5 +1,15 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.6.0 (2023-05-16)
+
+### 💥 Breaking Changes 💥
+
+- maint: drop go 1.18 (#144) | [@vreynolds](https://github.com/vreynolds)
+
+### Maintenance
+
+- maint: bump otel from 1.14.0 to 1.15.1 (#145)
+
 ## v0.5.4 (2023-04-20)
 
 ### Maintenance
