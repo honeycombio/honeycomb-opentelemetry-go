@@ -11,7 +11,7 @@ It makes getting started with OpenTelemetry and Honeycomb easier!
 
 Latest release built with:
 
-- [OpenTelemetry v1.15.1/v0.38.1](https://github.com/open-telemetry/opentelemetry-go/releases/tag/v1.15.1)
+- [OpenTelemetry v1.16.0/v0.39.0](https://github.com/open-telemetry/opentelemetry-go/releases/tag/v1.16.0)
 
 ## Why would I want to use this?
 
