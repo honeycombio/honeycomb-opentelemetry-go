@@ -1,5 +1,21 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.7.0 (2023-06-02)
+
+### 💥 Breaking Changes 💥
+
+Packages for the Metrics API have been moved as the API implementation has stablized in OTel Go v1.16.0.
+
+- `go.opentelemetry.io/otel/metric/global` -> `go.opentelemetry.io/otel`
+- `go.opentelemetry.io/otel/metric/instrument` -> `go.opentelemetry.io/otel/metric`
+
+Imports of these packages in your application will need to be updated.
+
+### Maintenance
+
+- maint(deps): bump github.com/honeycombio/otel-config-go from 1.9.0 to 1.10.0 (#148)
+  - includes: bump otel from 1.15.1/0.38.1 to 1.16.0/0.39.0
+
 ## v0.6.0 (2023-05-16)
 
 ### 💥 Breaking Changes 💥
