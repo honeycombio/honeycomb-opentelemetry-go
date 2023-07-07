@@ -7,3 +7,8 @@ Thumbs.db
 *.iml
 *.so
 coverage.*
+
+# test stuff
+smoke-tests/collector/data.json
+smoke-tests/collector/data-results/*.json
+smoke-tests/report.xml
