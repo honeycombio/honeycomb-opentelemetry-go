@@ -1,5 +1,17 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.8.0 (2023-08-16)
+
+### 💥 Breaking Changes 💥
+
+In previous versions, incompatible resource configurations would fail silently.
+Now an error is returned so it is clear when configuration is incompatible.
+
+### Maintenance
+
+- maint(deps): bump github.com/honeycombio/otel-config-go from 1.11.0 to 1.12.0 (#154)
+- maint(deps): bump github.com/honeycombio/otel-config-go from 1.10.0 to 1.11.0 (#152)
+
 ## v0.7.0 (2023-06-02)
 
 ### 💥 Breaking Changes 💥
