@@ -32,7 +32,7 @@ const (
 	honeycombDistroVersionKey        = "honeycomb.distro.version"
 	honeycombDistroRuntimeVersionKey = "honeycomb.distro.runtime_version"
 	otlpProtoVersionHeader           = "x-otlp-version"
-	otlpProtoVersionValue            = "0.19.0"
+	otlpProtoVersionValue            = "1.0.0"
 )
 
 func init() {

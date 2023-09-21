@@ -1,5 +1,12 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.8.1 (2023-09-22)
+
+### Maintenance
+
+- maint(deps): bump go.opentelemetry.io/otel/exporters/stdout/stdouttrace from 1.16.0 to 1.18.0 (#160)
+- maint(deps): bump github.com/honeycombio/otel-config-go from 1.12.0 to 1.12.1 (#159)
+
 ## v0.8.0 (2023-08-16)
 
 ### 💥 Breaking Changes 💥
