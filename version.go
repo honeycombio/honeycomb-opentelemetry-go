@@ -15,5 +15,5 @@
 package honeycomb
 
 var (
-	Version string = "0.8.1"
+	Version string = "0.9.0"
 )
