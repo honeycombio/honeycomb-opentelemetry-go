@@ -16,4 +16,31 @@ updates:
     commit-message:
       prefix: "maint"
       include: "scope"
-      
+    groups:
+      otel-dependencies:
+        patterns:
+          - "go.opentelemetry.io/otel/*"
+
+  - package-ecosystem: "gomod"
+    directory: "/examples/baggage"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "type: dependencies"
+    reviewers:
+      - "honeycombio/telemetry-team"
+    commit-message:
+      prefix: "maint"
+      include: "scope"
+
+  - package-ecosystem: "gomod"
+    directory: "/examples/webhook-listener-triggers"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "type: dependencies"
+    reviewers:
+      - "honeycombio/telemetry-team"
+    commit-message:
+      prefix: "maint"
+      include: "scope"
