@@ -47,7 +47,7 @@ func TestBaggageSpanProcessorAppendsBaggageAttributes(t *testing.T) {
 	// create ctx with some baggage
 	ctx := context.Background()
 	suitcase := baggage.FromContext(ctx)
-	packingCube, _ := baggage.NewMember("baggage.test", url.QueryEscape("baggage value"))
+	packingCube, _ := baggage.NewMember("baggage.test", url.PathEscape("baggage value"))
 	suitcase, _ = suitcase.SetMember(packingCube)
 	ctx = baggage.ContextWithBaggage(ctx, suitcase)
 
