@@ -11,7 +11,12 @@ It makes getting started with OpenTelemetry and Honeycomb easier!
 
 Latest release built with:
 
-- [OpenTelemetry v1.18.0/v0.41.0](https://github.com/open-telemetry/opentelemetry-go/releases/tag/v1.18.0)
+- [OpenTelemetry v1.21.0/v0.44.0](https://github.com/open-telemetry/opentelemetry-go/releases/tag/v1.21.0)
+- [OTel Config v1.13.0](https://github.com/honeycombio/otel-config-go/releases/tag/v1.13.0)
+
+Minimum Go Version: `1.20`
+
+See the OpenTelemetry SDK's [compatability matrix](https://github.com/open-telemetry/opentelemetry-go#compatibility) for more information.
 
 ## Why would I want to use this?
 
