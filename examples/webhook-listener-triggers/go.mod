@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/gorilla/mux v1.8.1
 	github.com/honeycombio/honeycomb-opentelemetry-go v0.8.1
-	github.com/honeycombio/otel-config-go v1.13.0
+	github.com/honeycombio/otel-config-go v1.13.1
 	go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.46.1
 )
 
