@@ -20,6 +20,7 @@ import (
 
 	"github.com/honeycombio/otel-config-go/otelconfig"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
 )
@@ -92,6 +93,11 @@ func TestSetVendorOptions(t *testing.T) {
 }
 
 func TestValidateConfig(t *testing.T) {
+	classicKey := "12345678901234567890123456789012"
+	classicIngestKey := "hcxic_1234567890123456789012345678901234567890123456789012345678"
+	ingestKey := "hcxik_1234567890123456789012345678901234567890123456789012345678"
+	modernKey := "123456789012345678901"
+
 	testCases := []struct {
 		desc                 string
 		apikey               string
@@ -101,21 +107,42 @@ func TestValidateConfig(t *testing.T) {
 	}{
 		{
 			desc:                 "modern API key and no dataset",
-			apikey:               "123456789012345678901",
+			apikey:               modernKey,
 			dataset:              "",
 			expectedLoggerFormat: "",
 			expectedLoggerValues: nil,
 		},
 		{
 			desc:                 "classic API key and a dataset",
-			apikey:               "12345678901234567890123456789012",
+			apikey:               classicKey,
 			dataset:              "is-set-horrah",
 			expectedLoggerFormat: "",
 			expectedLoggerValues: nil,
 		},
 		{
+			desc:                 "classic Ingest Key and a dataset",
+			apikey:               classicIngestKey,
+			dataset:              "my-dataset",
+			expectedLoggerFormat: "",
+			expectedLoggerValues: nil,
+		},
+		{
+			desc:                 "Ingest Key and no dataset",
+			apikey:               ingestKey,
+			dataset:              "",
+			expectedLoggerFormat: "",
+			expectedLoggerValues: nil,
+		},
+		{
 			desc:                 "modern API key and a dataset",
-			apikey:               "123456789012345678901",
+			apikey:               modernKey,
+			dataset:              "no thank you",
+			expectedLoggerFormat: dontSetADatasetMessageMessage,
+			expectedLoggerValues: nil,
+		},
+		{
+			desc:                 "ingest key and a dataset",
+			apikey:               ingestKey,
 			dataset:              "no thank you",
 			expectedLoggerFormat: dontSetADatasetMessageMessage,
 			expectedLoggerValues: nil,
@@ -129,12 +156,22 @@ func TestValidateConfig(t *testing.T) {
 		},
 		{
 			desc:                 "classic API key and no dataset",
-			apikey:               "12345678901234567890123456789012",
+			apikey:               classicKey,
 			dataset:              "",
 			expectedLoggerFormat: "%s\n%s",
 			expectedLoggerValues: []interface{}{
 				classicKeyMissingDatasetMessage,
-				"12345678901234567890123456789012",
+				classicKey,
+			},
+		},
+		{
+			desc:                 "classic Ingest Key and no dataset",
+			apikey:               classicIngestKey,
+			dataset:              "",
+			expectedLoggerFormat: "%s\n%s",
+			expectedLoggerValues: []interface{}{
+				classicKeyMissingDatasetMessage,
+				classicIngestKey,
 			},
 		},
 	}
@@ -143,15 +180,11 @@ func TestValidateConfig(t *testing.T) {
 			aConfig := freshConfig()
 			aConfig.Headers[honeycombApiKeyHeader] = tC.apikey
 			aConfig.Headers[honeycombDatasetHeader] = tC.dataset
-
 			logger := &captureLogger{}
-
 			aConfig.Logger = logger
 
 			err := validateConfig(aConfig)
-
-			// Check the output
-			assert.Equal(t, err, nil)
+			require.NoError(t, err)
 			assert.Equal(t, tC.expectedLoggerFormat, logger.Format)
 			assert.Equal(t, tC.expectedLoggerValues, logger.Values)
 		})
