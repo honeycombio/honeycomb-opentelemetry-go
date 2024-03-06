@@ -16,6 +16,7 @@ package honeycomb
 
 import (
 	"os"
+	"regexp"
 	"runtime"
 	"strconv"
 
@@ -34,6 +35,9 @@ const (
 	otlpProtoVersionHeader           = "x-otlp-version"
 	otlpProtoVersionValue            = "1.0.0"
 )
+
+var classicKeyRegex = regexp.MustCompile(`^[a-f0-9]*$`)
+var classicIngestKeyRegex = regexp.MustCompile(`^hc[a-z]ic_[a-z0-9]*$`)
 
 func init() {
 	otelconfig.SetVendorOptions = getVendorOptionSetters
@@ -188,14 +192,13 @@ func validateConfig(c *otelconfig.Config) error {
 	dataset := c.Headers[honeycombDatasetHeader]
 
 	if c.Logger != nil {
-		switch len(apikey) {
-		case 0:
+		if len(apikey) == 0 {
 			c.Logger.Debugf(noApiKeyDetectedMessage)
-		case 32: // classic
+		} else if isClassicKey(apikey) {
 			if dataset == "" {
 				c.Logger.Debugf("%s\n%s", classicKeyMissingDatasetMessage, apikey)
 			}
-		default:
+		} else {
 			if dataset != "" {
 				c.Logger.Debugf(dontSetADatasetMessageMessage)
 			}
@@ -203,4 +206,13 @@ func validateConfig(c *otelconfig.Config) error {
 	}
 
 	return nil
+}
+
+func isClassicKey(key string) bool {
+	if len(key) == 32 {
+		return classicKeyRegex.MatchString(key)
+	} else if len(key) == 64 {
+		return classicIngestKeyRegex.MatchString(key)
+	}
+	return false
 }
