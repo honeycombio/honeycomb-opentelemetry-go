@@ -1,5 +1,34 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## v0.10.0 (2024-03-06)
+
+### Enhancements
+
+- feat: support Classic Ingest Keys (#193)
+
+### Maintenance
+
+- maint(deps): bump go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux from 0.46.1 to 0.48.0 in /examples/webhook-listener-triggers (#188)
+- maint(deps): bump the otel-dependencies group with 1 update (#186)
+- maint(deps): bump go.opentelemetry.io/otel from 1.21.0 to 1.23.0 in /examples/baggage (#187)
+- maint(deps): bump go.opentelemetry.io/otel from 1.21.0 to 1.23.0 (#185)
+- maint(deps): bump github.com/honeycombio/otel-config-go from 1.13.0 to 1.13.1 in /examples/baggage (#180)
+- maint(deps): bump github.com/honeycombio/otel-config-go from 1.13.0 to 1.13.1 in /examples/webhook-listener-triggers (#179)
+- maint(deps): bump github.com/honeycombio/otel-config-go from 1.13.0 to 1.13.1 (#178)
+- maint: update codeowners to pipeline-team (#177)
+- maint: update codeowners to pipeline (#176)
+
+## v0.9.0 (2023-11-23)
+
+### 💥 Breaking Changes 💥
+
+Minimum Go Version is 1.20
+
+### Maintenance
+
+- maint(deps): update otel dependencies to 1.21.0 (#174)
+- maint(deps): update github.com/honeycombio/otel-config-go 1.13.0 (#174)
+
 ## v0.8.1 (2023-09-22)
 
 ### Maintenance
