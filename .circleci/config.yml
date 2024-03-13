@@ -30,7 +30,8 @@ jobs:
             - /home/circleci/go/pkg/mod
 
   smoke_test:
-    runs-on: ubuntu-24.04
+    docker:
+      - image: ubuntu-24.04
     steps:
       - checkout
       - attach_workspace:
