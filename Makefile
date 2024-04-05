@@ -25,6 +25,14 @@ smoke-sdk-http: smoke-tests/collector/data.json
 
 smoke-sdk: smoke-sdk-grpc smoke-sdk-http
 
+smoke-distroless-grpc: smoke-tests/collector/data.json
+	@echo ""
+	@echo "+++ Running gRPC smoke tests."
+	@echo ""
+	cd smoke-tests && bats ./smoke-distroless-grpc.bats --report-formatter junit --output ./
+
+smoke-distroless: smoke-distroless-grpc
+
 smoke: docker_compose_present
 	@echo ""
 	@echo "+++ Smoking all the tests."

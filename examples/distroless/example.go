@@ -101,5 +101,8 @@ func main() {
 
 	// Initialize HTTP handler instrumentation
 	wrapHandler()
-	log.Fatal(http.ListenAndServe(":3030", nil))
+	port := 3030
+	listenAddr := fmt.Sprintf(":%d", port)
+	log.Printf("Now listening on:%d ....\n", port)
+	log.Fatal(http.ListenAndServe(listenAddr, nil))
 }

@@ -18,6 +18,14 @@ x-app-base: &app_base
   depends_on:
     - collector
 
+x-distroless-base: &distroless_base
+  build:
+    context: ../
+    dockerfile: ./examples/distroless/Dockerfile
+  image: honeycomb/distroless-app
+  depends_on:
+    - collector
+
 services:
   collector:
     image: otel/opentelemetry-collector:0.81.0
@@ -42,3 +50,21 @@ services:
       OTEL_EXPORTER_OTLP_PROTOCOL: grpc
     ports:
       - "127.0.0.1:8090:8090"
+  
+  distroless-sdk-grpc:
+    <<: *distroless_base
+    environment:
+      <<: *env_base
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://collector:4317
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+    ports:
+      - "127.0.0.1:3030:3030"
+  
+  distroless-sdk-http:
+    <<: *distroless_base
+    environment:
+      <<: *env_base
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://collector:4318
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+    ports:
+      - "127.0.0.1:3030:3030"
