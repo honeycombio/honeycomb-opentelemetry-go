@@ -1,6 +1,6 @@
 module github.com/honeycombio/honeycomb-opentelemetry-go/examples/distroless
 
-go 1.22.1
+go 1.21
 
 require (
 	github.com/honeycombio/honeycomb-opentelemetry-go v0.10.0
