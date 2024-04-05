@@ -1,7 +1,8 @@
-go 1.19
+go 1.22.1
 
 use (
 	.
 	./examples/baggage
+	./examples/distroless
 	./examples/webhook-listener-triggers
 )
