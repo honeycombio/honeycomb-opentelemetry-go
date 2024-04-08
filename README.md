@@ -14,7 +14,7 @@ Latest release built with:
 - [OpenTelemetry v1.23/v0.48.0](https://github.com/open-telemetry/opentelemetry-go/releases/tag/v1.23.0)
 - [OTel Config v1.13.1](https://github.com/honeycombio/otel-config-go/releases/tag/v1.13.1)
 
-Minimum Go Version: `1.20`
+Minimum Go Version: `1.21`
 
 See the OpenTelemetry SDK's [compatability matrix](https://github.com/open-telemetry/opentelemetry-go#compatibility) for more information.
 
