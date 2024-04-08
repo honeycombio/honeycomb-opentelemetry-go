@@ -1,6 +1,6 @@
 module github.com/honeycombio/honeycomb-opentelemetry-go/examples/webhook-listener-triggers
 
-go 1.20
+go 1.21
 
 require (
 	github.com/gorilla/mux v1.8.1
