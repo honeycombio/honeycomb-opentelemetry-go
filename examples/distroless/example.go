@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/honeycombio/honeycomb-opentelemetry-go"
+	"github.com/honeycombio/honeycomb-opentelemetry-go/components"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
@@ -56,17 +56,17 @@ func main() {
 		}
 		enabled, _ := strconv.ParseBool(enableLocalVisualizationsStr)
 		if enabled {
-			exporter, _ := honeycomb.NewSpanLinkExporter(apikey, serviceName)
+			exporter, _ := components.NewSpanLinkExporter(apikey, serviceName)
 			opts = append(opts, trace.WithSpanProcessor(trace.NewSimpleSpanProcessor(exporter)))
 		}
 	}
 	// Enable multi-span attributes
-	opts = append(opts, trace.WithSpanProcessor(honeycomb.NewBaggageSpanProcessor()))
+	opts = append(opts, trace.WithSpanProcessor(components.NewBaggageSpanProcessor()))
 
 	if sampleRateStr := os.Getenv("SAMPLE_RATE"); sampleRateStr != "" {
 		sampleRate, err := strconv.Atoi(sampleRateStr)
 		if err == nil {
-			opts = append(opts, trace.WithSampler(honeycomb.NewDeterministicSampler(sampleRate)))
+			opts = append(opts, trace.WithSampler(components.NewDeterministicSampler(sampleRate)))
 		}
 	}
 

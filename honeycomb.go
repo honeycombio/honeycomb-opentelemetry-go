@@ -20,8 +20,8 @@ import (
 	"runtime"
 	"strconv"
 
+	"github.com/honeycombio/honeycomb-opentelemetry-go/components"
 	"github.com/honeycombio/otel-config-go/otelconfig"
-
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/trace"
 )
@@ -100,7 +100,7 @@ func WithMetricsDataset(dataset string) otelconfig.Option {
 // Sample rate is expressed as 1/X where x is the population size.
 func WithSampler(sampleRate int) otelconfig.Option {
 	return func(c *otelconfig.Config) {
-		c.Sampler = NewDeterministicSampler(sampleRate)
+		c.Sampler = components.NewDeterministicSampler(sampleRate)
 	}
 }
 
@@ -169,7 +169,7 @@ func getVendorOptionSetters() []otelconfig.Option {
 	if enableLocalVisualizationsStr := os.Getenv("HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS"); enableLocalVisualizationsStr != "" {
 		enabled, _ := strconv.ParseBool(enableLocalVisualizationsStr)
 		if enabled {
-			exporter, _ := NewSpanLinkExporter(apikey, serviceName)
+			exporter, _ := components.NewSpanLinkExporter(apikey, serviceName)
 			sp := otelconfig.WithSpanProcessor(trace.NewSimpleSpanProcessor(exporter))
 			opts = append(opts, sp)
 		}

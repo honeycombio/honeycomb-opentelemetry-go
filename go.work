@@ -5,4 +5,5 @@ use (
 	./examples/baggage
 	./examples/distroless
 	./examples/webhook-listener-triggers
+	./components
 )

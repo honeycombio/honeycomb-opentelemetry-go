@@ -5,7 +5,3 @@ const (
 	classicKeyMissingDatasetMessage string = "Honeycomb Classic API Key detected!\nYour API key: %s requires a dataset to be configured.\nConfigure via HONEYCOMB_DATASET or in code."
 	dontSetADatasetMessageMessage   string = "Dataset detected! Datasets are a Honeycomb Classic configuration value.\nUnset HONEYCOMB_DATASET or remove configuration code that sets a dataset."
 )
-
-func isClassicApiKey(apiKey string) bool {
-	return len(apiKey) == 32
-}

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package honeycomb
+package components
 
 import (
 	"context"
@@ -110,4 +110,8 @@ func (e *spanLinkExporter) Shutdown(ctx context.Context) error {
 	default:
 	}
 	return nil
+}
+
+func isClassicApiKey(apiKey string) bool {
+	return len(apiKey) == 32
 }

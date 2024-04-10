@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package honeycomb
+package components
 
 import (
 	"context"
@@ -26,7 +26,7 @@ type baggageSpanProcessor struct{}
 
 var _ trace.SpanProcessor = (*baggageSpanProcessor)(nil)
 
-// Returns a new baggageSpanProcessor.
+// NewBaggageSpanProcessor returns a new baggageSpanProcessor.
 //
 // The Baggage span processor duplicates onto a span the attributes found
 // in Baggage in the parent context at the moment the span is started.
