@@ -42,7 +42,6 @@ func freshConfig() *otelconfig.Config {
 		LogLevel:                        "",
 		Propagators:                     []string{},
 		ResourceAttributes:              map[string]string{},
-		ResourceAttributesFromEnv:       "",
 		SpanProcessors:                  []trace.SpanProcessor{},
 		Resource:                        &resource.Resource{},
 		Logger:                          nil,
