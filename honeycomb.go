@@ -182,6 +182,10 @@ func getVendorOptionSetters() []otelconfig.Option {
 		if enabled {
 			metricsEnabled = true
 		}
+	} else {
+		// if the variable is not set, set it to avoid enabling metrics
+		// via the library by default
+		os.Setenv("OTEL_METRICS_ENABLED", "false")
 	}
 	opts = append(opts, otelconfig.WithMetricsEnabled(metricsEnabled))
 	return opts
