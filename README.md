@@ -1,6 +1,8 @@
 [![OSS Lifecycle](https://img.shields.io/osslifecycle/honeycombio/honeycomb-opentelemetry-go)](https://github.com/honeycombio/home/blob/main/honeycomb-oss-lifecycle-and-practices.md)
 [![Build Status](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-go.svg?style=shield)](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-go)
 
+STATUS: this project is being Sunset. See #205.
+
 # Honeycomb OpenTelemetry Distro for Go
 
 **STATUS: this library is BETA.**
