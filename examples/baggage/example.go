@@ -27,6 +27,7 @@ import (
 	"github.com/honeycombio/honeycomb-opentelemetry-go"
 	"github.com/honeycombio/otel-config-go/otelconfig"
 
+	"go.opentelemetry.io/contrib/processors/baggage/baggagetrace"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/baggage"
@@ -39,7 +40,7 @@ func main() {
 			attribute.Int64("app.unix_time_ms", time.Now().UnixMilli()),
 		}
 	})
-	bsp := honeycomb.NewBaggageSpanProcessor()
+	bsp := baggagetrace.New()
 
 	shutdown, err := otelconfig.ConfigureOpenTelemetry(
 		otelconfig.WithSpanProcessor(dsp, bsp),
