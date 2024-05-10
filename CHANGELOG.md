@@ -1,5 +1,22 @@
 # Honeycomb OpenTelemetry Distro Changelog
 
+## 0.11.0 (2024-05-10)
+
+### Maintenance
+
+- maint: update example deps (#213)
+- maint: NewBaggageSpanProcessor replaced by go.opentelemetry.io/contrib/processors/baggage/baggagetrace.New (#204)
+  - Includes updating OTel dependencies to 1.26.0
+- maint: Update README title (#207)
+- maint: Update project status and add status link in README (#206)
+- maint: update otel dependencies to 1.25.0 (#202)
+- maint: Update ubuntu image in workflows to latest (#196)
+- maint(deps): bump go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux from 0.48.0 to 0.51.0 in /examples/webhook-listener-triggers (#208)
+- maint(deps): bump go.opentelemetry.io/otel/exporters/stdout/stdouttrace from 1.25.0 to 1.26.0 in the otel-dependencies group across 1 directory (#212)
+- maint(deps): bump github.com/stretchr/testify from 1.8.4 to 1.9.0 (#199)
+- maint(deps): bump go.opentelemetry.io/otel from 1.23.0 to 1.24.0 (#191)
+- maint(deps): bump go.opentelemetry.io/otel from 1.23.0 to 1.24.0 in /examples/baggage (#192)
+
 ## v0.10.0 (2024-03-06)
 
 ### Enhancements

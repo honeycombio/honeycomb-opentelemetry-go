@@ -33,7 +33,7 @@ const (
 	honeycombDistroVersionKey        = "honeycomb.distro.version"
 	honeycombDistroRuntimeVersionKey = "honeycomb.distro.runtime_version"
 	otlpProtoVersionHeader           = "x-otlp-version"
-	otlpProtoVersionValue            = "1.0.0"
+	otlpProtoVersionValue            = "1.2.0"
 )
 
 var classicKeyRegex = regexp.MustCompile(`^[a-f0-9]*$`)
