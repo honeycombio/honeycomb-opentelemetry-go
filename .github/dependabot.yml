@@ -12,7 +12,7 @@ updates:
     labels:
       - "type: dependencies"
     reviewers:
-      - "honeycombio/telemetry-team"
+      - "honeycombio/pipeline-team"
     commit-message:
       prefix: "maint"
       include: "scope"
@@ -28,7 +28,7 @@ updates:
     labels:
       - "type: dependencies"
     reviewers:
-      - "honeycombio/telemetry-team"
+      - "honeycombio/pipeline-team"
     commit-message:
       prefix: "maint"
       include: "scope"
@@ -40,7 +40,7 @@ updates:
     labels:
       - "type: dependencies"
     reviewers:
-      - "honeycombio/telemetry-team"
+      - "honeycombio/pipeline-team"
     commit-message:
       prefix: "maint"
       include: "scope"
