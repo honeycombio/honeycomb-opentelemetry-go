@@ -26,10 +26,11 @@ import (
 )
 
 func freshConfig() *otelconfig.Config {
+	disable := false
 	return &otelconfig.Config{
 		TracesExporterEndpoint:          "",
 		TracesExporterEndpointInsecure:  false,
-		TracesEnabled:                   false,
+		TracesEnabled:                   &disable,
 		ServiceName:                     "",
 		ServiceVersion:                  "",
 		Headers:                         map[string]string{},
@@ -37,7 +38,7 @@ func freshConfig() *otelconfig.Config {
 		MetricsHeaders:                  map[string]string{},
 		MetricsExporterEndpoint:         "",
 		MetricsExporterEndpointInsecure: false,
-		MetricsEnabled:                  false,
+		MetricsEnabled:                  &disable,
 		MetricsReportingPeriod:          "",
 		LogLevel:                        "",
 		Propagators:                     []string{},
@@ -328,7 +329,8 @@ func TestCanSetTracesAndMetricsSpecificHeaders(t *testing.T) {
 func TestMetricsAreDisabledByDefault(t *testing.T) {
 	// disabled by default
 	otelconfig.ValidateConfig = func(c *otelconfig.Config) error {
-		assert.False(t, c.MetricsEnabled)
+		require.NotNil(t, c.MetricsEnabled)
+		assert.False(t, *c.MetricsEnabled)
 		return nil
 	}
 	_, err := otelconfig.ConfigureOpenTelemetry()
@@ -337,7 +339,8 @@ func TestMetricsAreDisabledByDefault(t *testing.T) {
 	// can be enabled
 	t.Setenv("OTEL_METRICS_ENABLED", "true")
 	otelconfig.ValidateConfig = func(c *otelconfig.Config) error {
-		assert.True(t, c.MetricsEnabled)
+		require.NotNil(t, c.MetricsEnabled)
+		assert.True(t, *c.MetricsEnabled)
 		return nil
 	}
 	_, err = otelconfig.ConfigureOpenTelemetry()
