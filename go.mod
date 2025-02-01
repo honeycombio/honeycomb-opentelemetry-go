@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/honeycombio/otel-config-go v1.15.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	go.opentelemetry.io/contrib/processors/baggage/baggagetrace v0.0.0-20240508140322-077e60990642
 	go.opentelemetry.io/otel v1.26.0
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.26.0
